@@ -10,6 +10,12 @@ enum PlayerState {
   wallJumping,
 }
 
+enum PlayerDirection {
+  left,
+  right,
+  none,
+}
+
 class Player extends SpriteAnimationGroupComponent
     with HasGameReference<PixelAdventure> {
   String character;
@@ -20,12 +26,23 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation runningAnimation;
   final double stepTime = 0.05;
 
+  PlayerDirection playerDirection = PlayerDirection.none;
+  double moveSpeed = 100;
+  Vector2 velocity = Vector2.zero();
+
   @override
   Future<void> onLoad() async {
     _loadAllAnimations();
 
     return super.onLoad();
   }
+
+  @override
+  void update(double dt) {
+    _updatePlayerMovement(dt);
+    super.update(dt);
+  }
+
 
   void _loadAllAnimations() {
     idleAnimation = _spriteAnimation('Idle', 11);
@@ -50,5 +67,19 @@ class Player extends SpriteAnimationGroupComponent
         textureSize: Vector2.all(32),
       ),
     );
+  }
+
+  void _updatePlayerMovement(double dt) {
+    double dirX = 0.0;
+    switch (playerDirection) {
+      case PlayerDirection.left:
+        dirX -= moveSpeed;
+
+        break;
+      case PlayerDirection.right:
+        break;
+      case PlayerDirection.none:
+        break;
+    }
   }
 }
