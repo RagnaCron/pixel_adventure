@@ -6,7 +6,7 @@ import 'package:flame/game.dart';
 import 'package:pixel_adventure/levels/level.dart';
 
 class PixelAdventure extends FlameGame {
-  final level = Level();
+  final level = Level(levelName: 'level-01');
 
   @override
   Color backgroundColor() => const Color(0xff211f30);
