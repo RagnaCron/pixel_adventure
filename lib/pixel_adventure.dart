@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -8,7 +9,13 @@ class PixelAdventure extends FlameGame {
   final level = Level();
 
   @override
+  Color backgroundColor() => const Color(0xff211f30);
+
+  @override
   FutureOr<void> onLoad() async {
+    // Load all images in to cache.
+    await images.loadAllImages();
+
     camera = CameraComponent.withFixedResolution(
       world: level,
       width: 640,
@@ -17,6 +24,8 @@ class PixelAdventure extends FlameGame {
     camera.viewfinder.anchor = Anchor.topLeft;
 
     addAll([level]);
+
+
 
     return super.onLoad();
   }
