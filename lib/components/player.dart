@@ -1,6 +1,8 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
+import 'package:pixel_adventure/components/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 enum PlayerState {
@@ -14,7 +16,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with KeyboardHandler, HasGameReference<PixelAdventure> {
+    with CollisionCallbacks, KeyboardHandler, HasGameReference<PixelAdventure> {
   String character;
 
   Player({
@@ -30,6 +32,9 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation fallingAnimation;
   final double stepTime = 0.05;
 
+  final double _gravity = 9.8;
+  final double _jumpForce = 460;
+  final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
@@ -37,7 +42,8 @@ class Player extends SpriteAnimationGroupComponent
   @override
   Future<void> onLoad() async {
     _loadAllAnimations();
-
+    add(CircleHitbox());
+    debugMode = true;
     return super.onLoad();
   }
 
@@ -45,6 +51,8 @@ class Player extends SpriteAnimationGroupComponent
   void update(double dt) {
     _updatePlayerState();
     _updatePlayerMovement(dt);
+    _checkHorizontalCollisions();
+    _applyGravity(dt);
     super.update(dt);
   }
 
@@ -64,6 +72,23 @@ class Player extends SpriteAnimationGroupComponent
     horizontalMovement += isRightKeyPressed ? 1 : 0;
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is CollisionBlock) {
+      // if (!other.isPlatform) {
+      //   if (velocity.x > 0) { // going right
+      //     velocity.x = 0;
+      //     position.x = other.x - width;
+      //   }
+      //   if (velocity.x < 0) { // going left
+      //     velocity.x = 0;
+      //     position.x = other.x + other.width + width;
+      //   }
+      // }
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -117,5 +142,26 @@ class Player extends SpriteAnimationGroupComponent
     );
   }
 
+  void _checkHorizontalCollisions() {
+    for (final block in collisionBlocks) {
+      if (!block.isPlatform) {
+        if (checkCollision(this, block)) {
+          if (velocity.x > 0) {
+            velocity.x = 0;
+            position.x = block.x - width;
+          }
+          if (velocity.x < 0) {
+            velocity.x = 0;
+            position.x = block.x + block.width + width;
+          }
+        }
+      }
+    }
+  }
 
+  void _applyGravity(double dt) {
+    velocity.y += _gravity;
+    velocity =  velocity.
+    position.y += velocity.y * dt;
+  }
 }
