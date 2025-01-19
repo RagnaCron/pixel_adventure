@@ -7,22 +7,26 @@ enum PlayerState {
   running,
   jumping,
   falling,
-  doubleJumping,
-  wallJumping,
+  hit,
+  appearing,
+  disappearing,
 }
 
 enum PlayerDirection {
   left,
   right,
-  none,
   up,
+  none,
 }
 
 class Player extends SpriteAnimationGroupComponent
     with KeyboardHandler, HasGameReference<PixelAdventure> {
   String character;
 
-  Player({super.position, required this.character});
+  Player({
+    super.position,
+    this.character = "Ninja Frog",
+  });
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
