@@ -10,14 +10,12 @@ import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 class Level extends World with HasGameReference<PixelAdventure> {
-  final String backgroundName;
   final String levelName;
   final Player player;
 
   Level({
     required this.levelName,
     required this.player,
-    this.backgroundName = 'Pink',
   });
 
   late TiledComponent level;
@@ -36,22 +34,27 @@ class Level extends World with HasGameReference<PixelAdventure> {
   }
 
   void _scrollingBackground() {
-    final background = ParallaxComponent(
-      priority: -1,
-      parallax: Parallax(
-        [
-          ParallaxLayer(
-            ParallaxImage(
-              game.images.fromCache('Background/$backgroundName.png'),
-              repeat: ImageRepeat.repeat,
-              fill: LayerFill.none,
+    final backgroundLayer = level.tileMap.getLayer('Background');
+    if (backgroundLayer != null) {
+      final backgroundColor =
+          backgroundLayer.properties.getValue('BackgroundColor') ?? 'Gray';
+      final background = ParallaxComponent(
+        priority: -1,
+        parallax: Parallax(
+          [
+            ParallaxLayer(
+              ParallaxImage(
+                game.images.fromCache('Background/$backgroundColor.png'),
+                repeat: ImageRepeat.repeat,
+                fill: LayerFill.none,
+              ),
             ),
-          ),
-        ],
-        baseVelocity: Vector2(-20, -50),
-      ),
-    );
-    add(background);
+          ],
+          baseVelocity: Vector2(-20, -50),
+        ),
+      );
+      add(background);
+    }
   }
 
   void _spawningObjects() {

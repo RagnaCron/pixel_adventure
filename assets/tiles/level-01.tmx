@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="41">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="59">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <properties>
-   <property name="BackgroundColor" value="Gray"/>
+   <property name="BackgroundColor" value="Blue"/>
   </properties>
   <data encoding="csv">
 112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,112,
@@ -13,13 +13,13 @@
 112,112,112,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,112,112,112,
 112,112,112,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,112,112,112,
 112,112,112,113,71,71,71,71,71,71,71,71,71,71,0,0,0,0,71,71,71,71,71,71,71,71,71,0,0,71,71,71,71,71,71,71,111,112,112,112,
-112,112,112,113,40,41,42,71,71,0,0,0,0,71,71,71,71,71,71,71,71,71,71,71,0,0,0,0,71,71,71,71,71,71,71,71,111,112,112,112,
+112,112,112,113,40,41,41,42,71,0,0,0,0,71,71,71,71,71,71,71,71,71,71,71,0,0,0,0,71,71,71,71,71,71,71,71,111,112,112,112,
 112,112,112,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,112,112,112,
 112,112,112,113,71,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,71,111,112,112,112,
-112,112,112,113,40,41,42,0,0,0,0,0,13,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,41,42,71,71,71,111,112,112,112,
+112,112,112,113,40,41,42,0,0,0,0,0,13,14,14,15,0,0,0,0,0,0,0,0,0,0,0,0,0,40,41,41,42,71,71,71,111,112,112,112,
 112,112,112,113,71,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,111,112,112,112,
-112,112,112,113,71,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,14,15,0,0,0,0,0,0,0,0,0,71,71,111,112,112,112,
-112,112,112,113,40,41,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,41,42,0,71,71,111,112,112,112,
+112,112,112,113,71,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13,14,14,15,0,0,0,0,0,0,0,0,0,71,71,111,112,112,112,
+112,112,112,113,40,41,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,40,41,41,42,0,71,71,111,112,112,112,
 112,112,112,113,71,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,111,112,112,112,
 112,112,112,113,35,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,71,71,111,112,112,112,
 112,112,112,113,7,8,8,8,8,8,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,9,7,8,9,0,71,71,111,112,112,112,
@@ -33,6 +33,20 @@
  </layer>
  <objectgroup id="2" name="SpawnPoints">
   <object id="4" name="Player" type="Player" x="304" y="256" width="32" height="32"/>
+  <object id="41" name="Bananas" type="Fruit" x="80" y="80" width="32" height="32"/>
+  <object id="42" name="Apples" type="Fruit" x="80" y="128" width="32" height="32"/>
+  <object id="43" name="Cherris" type="Fruit" x="80" y="176" width="32" height="32"/>
+  <object id="46" name="Cherries" type="Fruit" x="208" y="96" width="32" height="32"/>
+  <object id="47" name="Kiwi" type="Fruit" x="336" y="160" width="32" height="32"/>
+  <object id="50" name="Cherries" type="Fruit" x="208" y="96" width="32" height="32"/>
+  <object id="51" name="Cherries" type="Fruit" x="192" y="128" width="32" height="32"/>
+  <object id="52" name="Cherries" type="Fruit" x="224" y="128" width="32" height="32"/>
+  <object id="53" name="Kiwi" type="Fruit" x="352" y="128" width="32" height="32"/>
+  <object id="54" name="Kiwi" type="Fruit" x="368" y="160" width="32" height="32"/>
+  <object id="55" name="Melon" type="Fruit" x="464" y="128" width="32" height="32"/>
+  <object id="56" name="Melon" type="Fruit" x="496" y="128" width="32" height="32"/>
+  <object id="57" name="Melon" type="Fruit" x="480" y="96" width="32" height="32"/>
+  <object id="58" name="Melon" type="Fruit" x="480" y="176" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="13" x="48" y="48" width="16" height="256"/>
@@ -41,13 +55,13 @@
   <object id="21" x="48" y="304" width="528" height="16"/>
   <object id="22" x="64" y="240" width="16" height="16"/>
   <object id="23" x="64" y="256" width="112" height="48"/>
-  <object id="33" type="Platform" x="64" y="112" width="48" height="16"/>
+  <object id="33" type="Platform" x="64" y="112" width="64" height="16"/>
   <object id="34" type="Platform" x="64" y="160" width="48" height="16"/>
   <object id="35" type="Platform" x="64" y="208" width="48" height="16"/>
-  <object id="36" x="192" y="160" width="48" height="16"/>
-  <object id="37" x="352" y="192" width="48" height="16"/>
-  <object id="38" type="Platform" x="480" y="160" width="48" height="16"/>
-  <object id="39" type="Platform" x="480" y="208" width="48" height="16"/>
+  <object id="36" x="192" y="160" width="64" height="16"/>
+  <object id="37" x="336" y="192" width="64" height="16"/>
+  <object id="38" type="Platform" x="464" y="160" width="64" height="16"/>
+  <object id="39" type="Platform" x="464" y="208" width="64" height="16"/>
   <object id="40" x="432" y="256" width="96" height="48"/>
  </objectgroup>
 </map>
