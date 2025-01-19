@@ -2,7 +2,8 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
-import 'package:pixel_adventure/components/player_hitbox.dart';
+import 'package:pixel_adventure/components/custom_hitbox.dart';
+import 'package:pixel_adventure/components/fruit.dart';
 import 'package:pixel_adventure/components/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -17,7 +18,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with KeyboardHandler, HasGameReference<PixelAdventure> {
+    with KeyboardHandler, HasGameReference<PixelAdventure>, CollisionCallbacks {
   String character;
 
   Player({
@@ -42,7 +43,7 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
-  PlayerHitbox hitBox = PlayerHitbox(
+  CustomHitBox hitBox = CustomHitBox(
     offsetX: 10,
     offsetY: 4,
     width: 14,
@@ -88,6 +89,16 @@ class Player extends SpriteAnimationGroupComponent
 
     //return super.onKeyEvent(event, keysPressed);
     return false;
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fruit) {
+      other.current = FruitState.collected;
+      //other.removeFromParent(); // Removes it before the end animation... shit..
+    }
+
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {

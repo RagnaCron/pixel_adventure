@@ -8,7 +8,7 @@ import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
-    with DragCallbacks, HasKeyboardHandlerComponents {
+    with DragCallbacks, HasKeyboardHandlerComponents, HasCollisionDetection {
   Player player = Player(character: 'Mask Dude');
 
   late final Level level;
