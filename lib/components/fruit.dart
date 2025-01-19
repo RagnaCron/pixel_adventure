@@ -53,6 +53,10 @@ class Fruit extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
+  void collidedWithPlayer() {
+    current = FruitState.collected;
+  }
+
   SpriteAnimation _spriteAnimation(String name, int amount, {bool loop = true}) {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache('Items/Fruits/$name.png'),

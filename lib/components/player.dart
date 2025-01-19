@@ -35,8 +35,8 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation fallingAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce =
-      400; // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
+  // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
+  final double _jumpForce = 420;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -94,8 +94,7 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fruit) {
-      other.current = FruitState.collected;
-      //other.removeFromParent(); // Removes it before the end animation... shit..
+      other.collidedWithPlayer();
     }
 
     super.onCollision(intersectionPoints, other);
