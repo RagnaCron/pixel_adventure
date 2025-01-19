@@ -1,4 +1,3 @@
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -33,7 +32,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 260;
+  final double _jumpForce = 400; // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
