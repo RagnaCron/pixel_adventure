@@ -9,7 +9,6 @@ class CollisionBlock extends PositionComponent {
     super.size,
     this.isPlatform = false,
   }) {
-    debugMode = true;
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+    // debugMode = true;
   }
 }

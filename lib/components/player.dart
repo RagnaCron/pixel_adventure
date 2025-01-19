@@ -16,7 +16,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with CollisionCallbacks, KeyboardHandler, HasGameReference<PixelAdventure> {
+    with KeyboardHandler, HasGameReference<PixelAdventure> {
   String character;
 
   Player({
@@ -33,17 +33,18 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 460;
+  final double _jumpForce = 260;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
+  bool isOnGround = false;
+  bool hasJumped = false;
 
   @override
   Future<void> onLoad() async {
     _loadAllAnimations();
-    add(CircleHitbox());
-    debugMode = true;
+    // debugMode = true;
     return super.onLoad();
   }
 
@@ -53,6 +54,7 @@ class Player extends SpriteAnimationGroupComponent
     _updatePlayerMovement(dt);
     _checkHorizontalCollisions();
     _applyGravity(dt);
+    _checkVerticalCollisions();
     super.update(dt);
   }
 
@@ -65,30 +67,15 @@ class Player extends SpriteAnimationGroupComponent
     final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
         keysPressed.contains(LogicalKeyboardKey.arrowRight);
 
-    final isJumpKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyW) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.keyW) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
+        keysPressed.contains(LogicalKeyboardKey.space);
 
     horizontalMovement += isLeftKeyPressed ? -1 : 0;
     horizontalMovement += isRightKeyPressed ? 1 : 0;
 
-    return super.onKeyEvent(event, keysPressed);
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is CollisionBlock) {
-      // if (!other.isPlatform) {
-      //   if (velocity.x > 0) { // going right
-      //     velocity.x = 0;
-      //     position.x = other.x - width;
-      //   }
-      //   if (velocity.x < 0) { // going left
-      //     velocity.x = 0;
-      //     position.x = other.x + other.width + width;
-      //   }
-      // }
-    }
-    super.onCollision(intersectionPoints, other);
+    //return super.onKeyEvent(event, keysPressed);
+    return false;
   }
 
   void _loadAllAnimations() {
@@ -123,12 +110,32 @@ class Player extends SpriteAnimationGroupComponent
       playerState = PlayerState.running;
     }
 
+    // Check if falling
+    if (velocity.y > 0) {
+      playerState = PlayerState.falling;
+    }
+
+    // Check if jumping
+    if (velocity.y < 0) {
+      playerState = PlayerState.jumping;
+    }
+
     current = playerState;
   }
 
   void _updatePlayerMovement(double dt) {
+    if (hasJumped && isOnGround) {
+      _playerJump(dt);
+    }
     velocity.x = horizontalMovement * moveSpeed;
     position.x += velocity.x * dt;
+  }
+
+  void _playerJump(double dt) {
+    velocity.y = -_jumpForce;
+    position.y += velocity.y * dt;
+    isOnGround = false;
+    hasJumped = false;
   }
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
@@ -161,7 +168,33 @@ class Player extends SpriteAnimationGroupComponent
 
   void _applyGravity(double dt) {
     velocity.y += _gravity;
-    velocity =  velocity.
+    velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
     position.y += velocity.y * dt;
+  }
+
+  void _checkVerticalCollisions() {
+    for (final block in collisionBlocks) {
+      if (block.isPlatform) {
+        if (checkCollision(this, block)) {
+          if (velocity.y > 0 ) {
+            velocity.y = 0;
+            position.y = block.y - height;
+            isOnGround = true;
+          }
+        }
+      } else {
+        if (checkCollision(this, block)) {
+          if (velocity.y > 0) {
+            velocity.y = 0;
+            position.y = block.y - height;
+            isOnGround = true;
+          }
+          if (velocity.y < 0) {
+            velocity.y = 0;
+            position.y = block.y + block.height;
+          }
+        }
+      }
+    }
   }
 }
