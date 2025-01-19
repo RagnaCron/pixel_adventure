@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="59">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="60">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <properties>
@@ -33,20 +33,20 @@
  </layer>
  <objectgroup id="2" name="SpawnPoints">
   <object id="4" name="Player" type="Player" x="304" y="256" width="32" height="32"/>
-  <object id="41" name="Bananas" type="Fruit" x="80" y="80" width="32" height="32"/>
-  <object id="42" name="Apples" type="Fruit" x="80" y="128" width="32" height="32"/>
-  <object id="43" name="Cherris" type="Fruit" x="80" y="176" width="32" height="32"/>
+  <object id="41" name="Bananas" type="Fruits" x="80" y="80" width="32" height="32"/>
+  <object id="42" name="Apple" type="Fruits" x="80" y="128" width="32" height="32"/>
   <object id="46" name="Cherries" type="Fruit" x="208" y="96" width="32" height="32"/>
-  <object id="47" name="Kiwi" type="Fruit" x="336" y="160" width="32" height="32"/>
-  <object id="50" name="Cherries" type="Fruit" x="208" y="96" width="32" height="32"/>
-  <object id="51" name="Cherries" type="Fruit" x="192" y="128" width="32" height="32"/>
-  <object id="52" name="Cherries" type="Fruit" x="224" y="128" width="32" height="32"/>
-  <object id="53" name="Kiwi" type="Fruit" x="352" y="128" width="32" height="32"/>
-  <object id="54" name="Kiwi" type="Fruit" x="368" y="160" width="32" height="32"/>
-  <object id="55" name="Melon" type="Fruit" x="464" y="128" width="32" height="32"/>
-  <object id="56" name="Melon" type="Fruit" x="496" y="128" width="32" height="32"/>
-  <object id="57" name="Melon" type="Fruit" x="480" y="96" width="32" height="32"/>
-  <object id="58" name="Melon" type="Fruit" x="480" y="176" width="32" height="32"/>
+  <object id="47" name="Kiwi" type="Fruits" x="336" y="160" width="32" height="32"/>
+  <object id="50" name="Cherries" type="Fruits" x="208" y="96" width="32" height="32"/>
+  <object id="51" name="Cherries" type="Fruits" x="192" y="128" width="32" height="32"/>
+  <object id="52" name="Cherries" type="Fruits" x="224" y="128" width="32" height="32"/>
+  <object id="53" name="Kiwi" type="Fruits" x="352" y="128" width="32" height="32"/>
+  <object id="54" name="Kiwi" type="Fruits" x="368" y="160" width="32" height="32"/>
+  <object id="55" name="Melon" type="Fruits" x="464" y="128" width="32" height="32"/>
+  <object id="56" name="Melon" type="Fruits" x="496" y="128" width="32" height="32"/>
+  <object id="57" name="Melon" type="Fruits" x="480" y="96" width="32" height="32"/>
+  <object id="58" name="Melon" type="Fruits" x="480" y="176" width="32" height="32"/>
+  <object id="59" name="Cherries" type="Fruits" x="80" y="176" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="13" x="48" y="48" width="16" height="256"/>

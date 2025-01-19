@@ -6,6 +6,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pixel_adventure/components/background_tile.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
+import 'package:pixel_adventure/components/fruit.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -20,6 +21,7 @@ class Level extends World with HasGameReference<PixelAdventure> {
 
   late TiledComponent level;
   List<CollisionBlock> collisionBlocks = [];
+  List<Fruit> fruits = [];
 
   @override
   FutureOr<void> onLoad() async {
@@ -66,6 +68,14 @@ class Level extends World with HasGameReference<PixelAdventure> {
           case 'Player':
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
+          case 'Fruits':
+            final fruit = Fruit(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              fruit: spawnPoint.name,
+            );
+            fruits.add(fruit);
+            add(fruit);
         }
       }
     }
