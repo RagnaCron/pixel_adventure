@@ -266,6 +266,7 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
+  // todo: bug in the animation for disappearing, when looking left on hit, the player is moved to the left of the origin hit point..
   void _respawn() async {
     playerHit = true;
     current = PlayerState.hit;
