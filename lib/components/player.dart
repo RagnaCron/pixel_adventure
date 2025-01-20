@@ -201,10 +201,11 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = false;
   }
 
-  SpriteAnimation _spriteAnimation(String state,
-      int amount, {
-        bool loop = true,
-      }) {
+  SpriteAnimation _spriteAnimation(
+    String state,
+    int amount, {
+    bool loop = true,
+  }) {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache("Main Characters/$character/$state (32x32).png"),
       SpriteAnimationData.sequenced(
@@ -268,47 +269,26 @@ class Player extends SpriteAnimationGroupComponent
   void _respawn() async {
     playerHit = true;
     current = PlayerState.hit;
-    final hitAnimation = animationTickers![PlayerState.hit]!;
-    await hitAnimation.completed.whenComplete(() {
+    final hitAnimation = animationTicker!;
+    hitAnimation.onComplete = () {
       current = PlayerState.disappearing;
       position = position - Vector2.all(32);
       hitAnimation.reset();
-      final disAnimation = animationTickers![PlayerState.disappearing]!;
-      disAnimation.completed.whenComplete(() {
+      final disappearAnimation = animationTicker!;
+      disappearAnimation.onComplete = () {
         current = PlayerState.appearing;
         scale.x = 1;
         position = startingPosition - Vector2.all(32);
-        disAnimation.reset();
-        final appearingAnimation = animationTickers![PlayerState.appearing]!;
-        appearingAnimation.completed.whenComplete(() {
+        disappearAnimation.reset();
+        final appearingAnimation = animationTicker!;
+        appearingAnimation.onComplete = () {
           position = startingPosition;
           current = PlayerState.idle;
           playerHit = false;
           appearingAnimation.reset();
-        });
-      });
-
-    });
+        };
+      };
+    };
   }
-}
 
-//   void _respawn() {
-//     const hitDuration = Duration(milliseconds: 350);
-//     const appearingDuration = Duration(milliseconds: 350);
-//     const disappearingDuration = Duration(milliseconds: 355);
-//     playerHit = true;
-//     current = PlayerState.hit;
-//     Future.delayed(hitDuration, () {
-//       current = PlayerState.disappearing;
-//       Future.delayed(disappearingDuration, () {
-//         scale.x = 1;
-//         position = startingPosition - Vector2.all(96 - 64);
-//         current = PlayerState.appearing;
-//         Future.delayed(appearingDuration, () {
-//           position = startingPosition;
-//           playerHit = false;
-//         });
-//       });
-//     });
-//   }
-// }
+}
