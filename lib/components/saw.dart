@@ -16,7 +16,7 @@ class Saw extends SpriteAnimationComponent
     required this.offPos,
   });
 
-  static const double sawSpeed = 0.03;
+  static const double sawSpeed = 0.02;
   static const double moveSpeed = 50.0;
   static const int tileSize = 16;
   double moveDirection = 1;
@@ -25,7 +25,6 @@ class Saw extends SpriteAnimationComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
     priority = -1;
     animation = _spriteAnimation('On (38x38)', 8);
 
