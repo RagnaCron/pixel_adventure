@@ -3,6 +3,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruit.dart';
@@ -69,7 +70,7 @@ class Player extends SpriteAnimationGroupComponent
       position: Vector2(hitBox.offsetX, hitBox.offsetY),
       size: Vector2(hitBox.width, hitBox.height),
     ));
-    // debugMode = true;
+
     return super.onLoad();
   }
 
@@ -114,6 +115,10 @@ class Player extends SpriteAnimationGroupComponent
 
     if (other is Saw) {
       _respawn();
+    }
+
+    if (other is Checkpoint) {
+      other.reachedCheckpoint();
     }
 
     super.onCollision(intersectionPoints, other);
