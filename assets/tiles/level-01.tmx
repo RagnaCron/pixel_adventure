@@ -55,8 +55,8 @@
   <object id="64" type="Saw" x="288" y="128" width="32" height="32">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
-    <property name="offNeg" type="float" value="-4"/>
-    <property name="offPos" type="float" value="-3"/>
+    <property name="offNeg" type="float" value="3"/>
+    <property name="offPos" type="float" value="4"/>
    </properties>
   </object>
  </objectgroup>

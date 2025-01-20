@@ -28,6 +28,8 @@ class Saw extends SpriteAnimationComponent
     priority = -1;
     animation = _spriteAnimation('On (38x38)', 8);
 
+    add(CircleHitbox());
+
     if (isVertical) {
       rangeNeg = position.y - offNeg * tileSize;
       rangePos = position.y + offPos * tileSize;
@@ -50,9 +52,9 @@ class Saw extends SpriteAnimationComponent
   }
 
   void _moveVertically(double dt) {
-    if (position.y >= rangeNeg) {
+    if (position.y >= rangePos) {
       moveDirection = -1;
-    } else if (position.y <= rangePos) {
+    } else if (position.y <= rangeNeg) {
       moveDirection = 1;
     }
     position.y += moveDirection * moveSpeed * dt;
@@ -78,6 +80,4 @@ class Saw extends SpriteAnimationComponent
           loop: loop),
     );
   }
-
-
 }
