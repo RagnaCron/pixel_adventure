@@ -61,6 +61,8 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 startingPosition = Vector2.zero();
   bool playerHit = false;
 
+  bool _playerReachedCheckpoint = false;
+
   @override
   Future<void> onLoad() async {
     startingPosition = Vector2(position.x, position.y);
@@ -76,7 +78,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!playerHit) {
+    if (!playerHit && !_playerReachedCheckpoint) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
       _checkHorizontalCollisions();
@@ -109,6 +111,8 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (_playerReachedCheckpoint) return;
+
     if (other is Fruit) {
       other.collidedWithPlayer();
     }
@@ -117,8 +121,8 @@ class Player extends SpriteAnimationGroupComponent
       _respawn();
     }
 
-    if (other is Checkpoint) {
-      other.reachedCheckpoint();
+    if (other is Checkpoint && !_playerReachedCheckpoint) {
+      _reachedCheckpoint();
     }
 
     super.onCollision(intersectionPoints, other);
@@ -302,4 +306,20 @@ class Player extends SpriteAnimationGroupComponent
     };
   }
 
+  void _reachedCheckpoint() {
+    _playerReachedCheckpoint = true;
+
+    if (scale.x < 0) {
+      position = position - Vector2(-32, 32);
+    } else {
+      position = position - Vector2.all(32);
+    }
+    current = PlayerState.disappearing;
+
+    final disappearing = animationTicker!;
+    disappearing.onComplete = () {
+      removeFromParent();
+      disappearing.reset();
+    };
+  }
 }

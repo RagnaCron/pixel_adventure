@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
+import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 enum FlagState {
@@ -31,7 +32,6 @@ class Checkpoint extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
     priority = -1;
 
     _addAnimations();
@@ -46,14 +46,22 @@ class Checkpoint extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  void reachedCheckpoint() {
-    if (_hitFlag) return;
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Player && !_hitFlag) {
+      _reachedCheckpoint();
+    }
+    super.onCollision(intersectionPoints, other);
+  }
+
+  void _reachedCheckpoint() {
     _hitFlag = true;
     current = FlagState.flagOut;
 
     final finished = animationTicker!;
     finished.onComplete = () {
       current = FlagState.flagIdle;
+      finished.reset();
     };
   }
 
