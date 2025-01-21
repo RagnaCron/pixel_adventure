@@ -4,16 +4,22 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:pixel_adventure/components/jump_button.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
-    with DragCallbacks, HasKeyboardHandlerComponents, HasCollisionDetection {
+    with
+        DragCallbacks,
+        HasKeyboardHandlerComponents,
+        HasCollisionDetection,
+        TapCallbacks {
   Player player = Player(character: 'Mask Dude');
 
-  // late Level level;
+
+  // Todo: check why the overlay for the controls is behind the game scene...
   late JoystickComponent joystick;
-  bool showJoystick = false;
+  bool showControls = false;
 
   List<String> levelNames = [
     'level-01',
@@ -26,13 +32,15 @@ class PixelAdventure extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
+    priority = 0;
     // Load all images in to cache.
     await images.loadAllImages();
 
     _loadLevel();
 
-    if (showJoystick) {
+    if (showControls) {
       addJoyStick();
+      add(JumpButton());
     }
 
     return super.onLoad();
@@ -40,7 +48,7 @@ class PixelAdventure extends FlameGame
 
   @override
   void update(double dt) {
-    if (showJoystick) {
+    if (showControls) {
       updateJoystick();
     }
     super.update(dt);
@@ -86,7 +94,7 @@ class PixelAdventure extends FlameGame
       background: SpriteComponent(
         sprite: Sprite(images.fromCache('HUD/Joystick.png')),
       ),
-      margin: const EdgeInsets.only(left: 28, bottom: 32),
+      margin: const EdgeInsets.only(left: 32, bottom: 32),
     );
 
     add(joystick);
