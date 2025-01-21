@@ -316,8 +316,16 @@ class Player extends SpriteAnimationGroupComponent
 
     final disappearing = animationTicker!;
     disappearing.onComplete = () {
-      removeFromParent();
+      // position = startingPosition;
+
       disappearing.reset();
+      removeFromParent();
+
+      Future.delayed(const Duration(seconds: 3), () {
+        playerHit = false;
+        _playerReachedCheckpoint = false;
+        game.loadNextLevel();
+      });
     };
   }
 }
