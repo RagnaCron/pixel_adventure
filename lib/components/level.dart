@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
-import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/rendering.dart';
+import 'package:pixel_adventure/components/background_tile.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/saw.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -37,27 +36,7 @@ class Level extends World with HasGameReference<PixelAdventure> {
   }
 
   void _scrollingBackground() {
-    final backgroundLayer = level.tileMap.getLayer('Background');
-    if (backgroundLayer != null) {
-      final backgroundColor =
-          backgroundLayer.properties.getValue('BackgroundColor') ?? 'Gray';
-      final background = ParallaxComponent(
-        priority: -1,
-        parallax: Parallax(
-          [
-            ParallaxLayer(
-              ParallaxImage(
-                game.images.fromCache('Background/$backgroundColor.png'),
-                repeat: ImageRepeat.repeat,
-                fill: LayerFill.none,
-              ),
-            ),
-          ],
-          baseVelocity: Vector2(-20, -50),
-        ),
-      );
-      add(background);
-    }
+    add(BackgroundTile());
   }
 
   void _spawningObjects() {
