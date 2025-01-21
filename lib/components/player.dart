@@ -42,9 +42,8 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation disappearingAnimation;
 
   final double _gravity = 9.8;
-
   // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
-  final double _jumpForce = 420;
+  final double _jumpForce = 320;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -63,8 +62,12 @@ class Player extends SpriteAnimationGroupComponent
 
   bool _playerReachedCheckpoint = false;
 
+  double fixedDeltaTime = 1 / 90;
+  double accumulatedTime = 0;
+
   @override
   Future<void> onLoad() async {
+    priority = 1;
     startingPosition = Vector2(position.x, position.y);
 
     _loadAllAnimations();
@@ -78,13 +81,19 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!playerHit && !_playerReachedCheckpoint) {
-      _updatePlayerState();
-      _updatePlayerMovement(dt);
-      _checkHorizontalCollisions();
-      _applyGravity(dt);
-      _checkVerticalCollisions();
+    accumulatedTime += dt;
+
+    while (accumulatedTime >= fixedDeltaTime) {
+      if (!playerHit && !_playerReachedCheckpoint) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
+      accumulatedTime -= fixedDeltaTime;
     }
+
     super.update(dt);
   }
 
