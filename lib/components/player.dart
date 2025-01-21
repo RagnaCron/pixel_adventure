@@ -84,8 +84,7 @@ class Player extends SpriteAnimationGroupComponent
       _checkHorizontalCollisions();
       _applyGravity(dt);
       _checkVerticalCollisions();
-    } else {}
-
+    }
     super.update(dt);
   }
 
@@ -111,20 +110,19 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (_playerReachedCheckpoint) return;
+    if (!_playerReachedCheckpoint) {
+      if (other is Fruit) {
+        other.collidedWithPlayer();
+      }
 
-    if (other is Fruit) {
-      other.collidedWithPlayer();
+      if (other is Saw) {
+        _respawn();
+      }
+
+      if (other is Checkpoint) {
+        _reachedCheckpoint();
+      }
     }
-
-    if (other is Saw) {
-      _respawn();
-    }
-
-    if (other is Checkpoint && !_playerReachedCheckpoint) {
-      _reachedCheckpoint();
-    }
-
     super.onCollision(intersectionPoints, other);
   }
 
