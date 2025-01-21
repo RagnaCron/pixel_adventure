@@ -277,34 +277,22 @@ class Player extends SpriteAnimationGroupComponent
     playerHit = true;
     current = PlayerState.hit;
 
-    final hitAnimation = animationTicker!;
-    hitAnimation.onComplete = () {
-      if (scale.x < 0) {
-        position = position - Vector2(-32, 32);
-      } else {
-        position = position - Vector2.all(32);
-      }
-      current = PlayerState.disappearing;
-      hitAnimation.reset();
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
-      final disappearAnimation = animationTicker!;
-      disappearAnimation.onComplete = () {
-        scale.x = 1;
-        position = startingPosition - Vector2.all(32);
-        current = PlayerState.appearing;
-        disappearAnimation.reset();
+    scale.x = 1;
+    position = startingPosition - Vector2.all(32);
+    current = PlayerState.appearing;
 
-        final appearingAnimation = animationTicker!;
-        appearingAnimation.onComplete = () {
-          position = startingPosition;
-          playerHit = false;
-          appearingAnimation.reset();
-        };
-      };
-    };
+    await animationTicker?.completed;
+    animationTicker?.reset();
+
+    velocity = Vector2.zero();
+    position = startingPosition;
+    playerHit = false;
   }
 
-  void _reachedCheckpoint() {
+  void _reachedCheckpoint() async {
     _playerReachedCheckpoint = true;
 
     if (scale.x < 0) {
@@ -314,18 +302,12 @@ class Player extends SpriteAnimationGroupComponent
     }
     current = PlayerState.disappearing;
 
-    final disappearing = animationTicker!;
-    disappearing.onComplete = () {
-      // position = startingPosition;
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
-      disappearing.reset();
-      removeFromParent();
+    _playerReachedCheckpoint = false;
+    position = Vector2.all(-640);
 
-      Future.delayed(const Duration(seconds: 3), () {
-        playerHit = false;
-        _playerReachedCheckpoint = false;
-        game.loadNextLevel();
-      });
-    };
+    Future.delayed(const Duration(seconds: 3), () => game.loadNextLevel());
   }
 }
