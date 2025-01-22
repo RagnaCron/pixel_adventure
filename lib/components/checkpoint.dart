@@ -17,8 +17,6 @@ class Checkpoint extends SpriteAnimationGroupComponent
     super.size,
   });
 
-  bool _hitFlag = false;
-
   late final SpriteAnimation noFlagAnimation;
   late final SpriteAnimation flagOutAnimation;
   late final SpriteAnimation flagIdleAnimation;
@@ -47,22 +45,20 @@ class Checkpoint extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player && !_hitFlag) {
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Player) {
       _reachedCheckpoint();
     }
-    super.onCollision(intersectionPoints, other);
+    super.onCollisionStart(intersectionPoints, other);
   }
 
-  void _reachedCheckpoint() {
-    _hitFlag = true;
+  void _reachedCheckpoint() async {
     current = FlagState.flagOut;
 
-    final finished = animationTicker!;
-    finished.onComplete = () {
-      current = FlagState.flagIdle;
-      finished.reset();
-    };
+    await animationTicker?.completed;
+    animationTicker?.reset();
+
+    current = FlagState.flagIdle;
   }
 
   void _addAnimations() {
