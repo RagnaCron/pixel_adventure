@@ -42,6 +42,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation disappearingAnimation;
 
   final double _gravity = 9.8;
+
   // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
   final double _jumpForce = 320;
   final double _terminalVelocity = 300;
@@ -118,7 +119,8 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!_playerReachedCheckpoint) {
       if (other is Fruit) {
         other.collidedWithPlayer();
@@ -132,7 +134,7 @@ class Player extends SpriteAnimationGroupComponent
         _reachedCheckpoint();
       }
     }
-    super.onCollision(intersectionPoints, other);
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -141,24 +143,9 @@ class Player extends SpriteAnimationGroupComponent
     jumpingAnimation = _spriteAnimation('Jump', 1);
     fallingAnimation = _spriteAnimation('Fall', 1);
     hitAnimation = _spriteAnimation('Hit', 7, loop: false);
-    appearingAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache("Main Characters/Appearing (96x96).png"),
-      SpriteAnimationData.sequenced(
-        amount: 7,
-        stepTime: stepTime,
-        textureSize: Vector2.all(96),
-        loop: false,
-      ),
-    );
-    disappearingAnimation = SpriteAnimation.fromFrameData(
-      game.images.fromCache("Main Characters/Disappearing (96x96).png"),
-      SpriteAnimationData.sequenced(
-        amount: 7,
-        stepTime: stepTime,
-        textureSize: Vector2.all(96),
-        loop: false,
-      ),
-    );
+    appearingAnimation = _spriteSpecialAnimation('Appearing', 7, loop: false);
+    disappearingAnimation =
+        _spriteSpecialAnimation('Disappearing', 7, loop: false);
 
     // List of all animations
     animations = {
@@ -228,6 +215,22 @@ class Player extends SpriteAnimationGroupComponent
         amount: amount,
         stepTime: stepTime,
         textureSize: Vector2.all(32),
+        loop: loop,
+      ),
+    );
+  }
+
+  SpriteAnimation _spriteSpecialAnimation(
+    String state,
+    int amount, {
+    bool loop = true,
+  }) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache("Main Characters/$state (96x96).png"),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
         loop: loop,
       ),
     );
