@@ -1,7 +1,7 @@
-// import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:flame_isolate/flame_isolate.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -22,7 +22,11 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with KeyboardHandler, HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with
+        KeyboardHandler,
+        HasGameReference<PixelAdventure>,
+        CollisionCallbacks,
+        FlameIsolate {
   String character;
 
   Player({
@@ -75,6 +79,7 @@ class Player extends SpriteAnimationGroupComponent
     add(RectangleHitbox(
       position: Vector2(hitBox.offsetX, hitBox.offsetY),
       size: Vector2(hitBox.width, hitBox.height),
+      isSolid: true,
     ));
 
     return super.onLoad();
@@ -197,7 +202,13 @@ class Player extends SpriteAnimationGroupComponent
     position.x += velocity.x * dt;
   }
 
+  // IsolateCallback callback = FlameAudio.play('jump.wav', volume: game.soundVolume);
+
   void _playerJump(double dt) {
+    if (game.playSound) {
+      // isolateCompute(() => FlameAudio.play('jump.wav', volume: game.soundVolume));
+      FlameAudio.play('jump.wav', volume: game.soundVolume);
+    }
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -286,6 +297,10 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    if (game.playSound) {
+      FlameAudio.play('hit.wav', volume: game.soundVolume);
+    }
+
     playerHit = true;
     current = PlayerState.hit;
 
@@ -305,11 +320,14 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _reachedCheckpoint() async {
+    if (game.playSound) {
+      FlameAudio.play('disappear.wav', volume: game.soundVolume);
+    }
     _playerReachedCheckpoint = true;
 
     if (scale.x < 0) {
       position = position - Vector2(-32, 32);
-    } else {
+    } else if (scale.x > 0) {
       position = position - Vector2.all(32);
     }
     current = PlayerState.disappearing;

@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -35,9 +36,9 @@ class Fruit extends SpriteAnimationGroupComponent
     priority = -1;
     add(RectangleHitbox(
       collisionType: CollisionType.passive,
-      position:
-          Vector2(hitBox.offsetX, hitBox.offsetY),
+      position: Vector2(hitBox.offsetX, hitBox.offsetY),
       size: Vector2(hitBox.width, hitBox.height),
+      isSolid: true,
     ));
     fruityAnimation = _spriteAnimation(fruit, 17);
     poppingAnimation = _spriteAnimation('Collected', 6, loop: false);
@@ -52,11 +53,13 @@ class Fruit extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  void collidedWithPlayer() {
+  void collidedWithPlayer() async {
+    FlameAudio.play('collect_fruit.wav', volume: game.soundVolume);
     current = FruitState.collected;
   }
 
-  SpriteAnimation _spriteAnimation(String name, int amount, {bool loop = true}) {
+  SpriteAnimation _spriteAnimation(String name, int amount,
+      {bool loop = true}) {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache('Items/Fruits/$name.png'),
       SpriteAnimationData.sequenced(

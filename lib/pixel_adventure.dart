@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:pixel_adventure/components/jump_button.dart';
 import 'package:pixel_adventure/components/player.dart';
@@ -16,7 +17,6 @@ class PixelAdventure extends FlameGame
         TapCallbacks {
   Player player = Player(character: 'Mask Dude');
 
-
   // Todo: check why the overlay for the controls is behind the game scene...
   late JoystickComponent joystick;
   bool showControls = false;
@@ -26,6 +26,9 @@ class PixelAdventure extends FlameGame
     'level-01',
   ];
   int currentLevelIndex = 0;
+
+  bool playSound = true;
+  double soundVolume = 1.0;
 
   @override
   Color backgroundColor() => const Color(0xff211f30);
@@ -43,6 +46,16 @@ class PixelAdventure extends FlameGame
       add(JumpButton());
     }
 
+    if (playSound) {
+      await FlameAudio.audioCache.loadAll([
+        'bounce.wav',
+        'collect_fruit.wav',
+        'disappear.wav',
+        'hit.wav',
+        'jump.wav'
+      ]);
+    }
+
     return super.onLoad();
   }
 
@@ -55,6 +68,8 @@ class PixelAdventure extends FlameGame
   }
 
   void loadNextLevel() {
+    removeWhere((component) => component is Level);
+
     if (currentLevelIndex < levelNames.length - 1) {
       currentLevelIndex++;
     } else {
