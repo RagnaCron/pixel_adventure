@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/components/background_tile.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
+import 'package:pixel_adventure/components/chicken.dart';
 import 'package:pixel_adventure/components/saw.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/fruit.dart';
@@ -75,6 +76,15 @@ class Level extends World with HasGameReference<PixelAdventure> {
               size: spawnPoint.size,
             );
             add(checkpoint);
+
+          case 'Chicken':
+            final chicken = Chicken(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              offNeg: spawnPoint.properties.getValue('offNeg'),
+              offPos: spawnPoint.properties.getValue('offPos'),
+            );
+            add(chicken);
         }
       }
     }

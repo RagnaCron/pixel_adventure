@@ -1,7 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_isolate/flame_isolate.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -25,8 +24,7 @@ class Player extends SpriteAnimationGroupComponent
     with
         KeyboardHandler,
         HasGameReference<PixelAdventure>,
-        CollisionCallbacks,
-        FlameIsolate {
+        CollisionCallbacks {
   String character;
 
   Player({
