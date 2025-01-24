@@ -1,6 +1,10 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
+import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 enum ChickenState {
@@ -17,60 +21,90 @@ class Chicken extends SpriteAnimationGroupComponent
   Chicken({
     super.position,
     super.size,
-    required this.offNeg,
-    required this.offPos,
+    this.offNeg = 0,
+    this.offPos = 0,
     super.removeOnFinish = const {ChickenState.hit: true},
   });
 
-  final double stepTime = 0.05;
+  static const double stepTime = 0.05;
+  static const double moveSpeed = 80.0;
+  static const int tileSize = 16;
+  static const double _bouncedHeight = 260.0;
+
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation runAnimation;
+  late final Player player;
 
-  static const double moveSpeed = 50.0;
-  static const int tileSize = 16;
   double moveDirection = 1;
+  double targetDirection = -1;
   double rangeNeg = 0;
   double rangePos = 0;
+  Vector2 velocity = Vector2.zero();
+  bool gotStomped = false;
 
   CustomHitBox hitBox = CustomHitBox(
-    offsetX: 0,
-    offsetY: 0,
-    width: 32,
-    height: 32,
+    offsetX: 4,
+    offsetY: 6,
+    width: 24,
+    height: 26,
   );
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
+    player = game.player;
 
     _loadAllAnimations();
+    _calculateRange();
 
     add(RectangleHitbox(
+      collisionType: CollisionType.passive,
       position: Vector2(hitBox.offsetX, hitBox.offsetY),
       size: Vector2(hitBox.width, hitBox.height),
       isSolid: true,
     ));
-
-    rangeNeg = position.x - offNeg * tileSize;
-    rangePos = position.x + offPos * tileSize;
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    // _moveHorizontally(dt);
-    
+    if (!gotStomped) {
+      _updateChickenState();
+      _movement(dt);
+    }
     super.update(dt);
   }
-  void _moveHorizontally(double dt) {
-    if (position.x >= rangePos) {
-      moveDirection = -1;
-    } else if (position.x <= rangeNeg) {
-      moveDirection = 1;
+
+  void _movement(double dt) {
+    velocity.x = 0;
+
+    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+    double chickenOffset = (scale.x > 0) ? 0 : -width;
+
+    if (playerInRange()) {
+      targetDirection =
+          (player.x + playerOffset < position.x + chickenOffset) ? -1 : 1;
+      velocity.x = targetDirection * moveSpeed;
     }
-    position.x += moveDirection * moveSpeed * dt;
+
+    moveDirection = lerpDouble(moveDirection, targetDirection, 0.1) ?? 1;
+
+    position.x += velocity.x * dt;
+  }
+
+  void _updateChickenState() {
+    current = (velocity.x != 0) ? ChickenState.run : ChickenState.idle;
+
+    if ((moveDirection > 0 && scale.x > 0) ||
+        (moveDirection < 0 && scale.x < 0)) {
+      flipHorizontallyAroundCenter();
+    }
+  }
+
+  void _calculateRange() {
+    rangeNeg = position.x - offNeg * tileSize;
+    rangePos = position.x + offPos * tileSize;
   }
 
   void _loadAllAnimations() {
@@ -86,8 +120,6 @@ class Chicken extends SpriteAnimationGroupComponent
 
     current = ChickenState.idle;
   }
-
-
 
   SpriteAnimation _spriteAnimation(
     String state,
@@ -105,5 +137,26 @@ class Chicken extends SpriteAnimationGroupComponent
     );
   }
 
+  bool playerInRange() {
+    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
 
+    return (player.x + playerOffset >= rangeNeg &&
+        player.x + playerOffset <= rangePos &&
+        player.y + player.height > position.y &&
+        player.y < position.y + height);
+  }
+
+  void collidedWithPlayer() {
+    if (player.velocity.y > 0 && player.y + player.height > position.y) {
+      if (game.playSound) {
+        FlameAudio.play('bounce.wav', volume: game.soundVolume);
+      }
+      gotStomped = true;
+
+      current = ChickenState.hit;
+      player.velocity.y = -_bouncedHeight;
+    } else {
+      player.collidedWithEnemy();
+    }
+  }
 }
