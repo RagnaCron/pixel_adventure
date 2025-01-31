@@ -27,7 +27,7 @@ class Chicken extends SpriteAnimationGroupComponent
   });
 
   static const double stepTime = 0.05;
-  static const double moveSpeed = 80.0;
+  static const double moveSpeed = 100.0;
   static const int tileSize = 16;
   static const double _bouncedHeight = 260.0;
 
