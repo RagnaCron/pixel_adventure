@@ -6,7 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:pixel_adventure/components/jump_button.dart';
-import 'package:pixel_adventure/components/player.dart';
+import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
@@ -28,7 +28,7 @@ class PixelAdventure extends FlameGame
   int currentLevelIndex = 0;
 
   bool playSound = true;
-  double soundVolume = 1.0;
+  double soundVolume = 0.7;
 
   @override
   Color backgroundColor() => const Color(0xff211f30);
