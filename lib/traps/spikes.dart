@@ -24,7 +24,6 @@ class Spikes extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
     sprite = Sprite(
       game.images.fromCache('Traps/Spikes/Idle.png'),
       srcSize: Vector2.all(16),

@@ -65,9 +65,12 @@ class Level extends World with HasGameReference<PixelAdventure> {
             final saw = Saw(
               position: spawnPoint.position,
               size: spawnPoint.size,
-              isVertical: spawnPoint.properties.getValue('isVertical'),
-              offNeg: spawnPoint.properties.getValue('offNeg'),
-              offPos: spawnPoint.properties.getValue('offPos'),
+              initialMovement: spawnPoint.properties.getValue('initialMovement'),
+              isClockWise: spawnPoint.properties.getValue('isClockWise'),
+              horizontalOffNeg: spawnPoint.properties.getValue('horizontalOffNeg'),
+              horizontalOffPos: spawnPoint.properties.getValue('horizontalOffPos'),
+              verticalOffNeg: spawnPoint.properties.getValue('verticalOffNeg'),
+              verticalOffPos: spawnPoint.properties.getValue('verticalOffPos'),
             );
             add(saw);
 

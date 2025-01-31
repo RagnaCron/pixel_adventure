@@ -2,26 +2,36 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
+enum MovementState { movingRight, movingLeft, movingUp, movingDown }
+
 class Saw extends SpriteAnimationComponent
     with HasGameReference<PixelAdventure>, CollisionCallbacks {
-  bool isVertical;
-  final double offNeg;
-  final double offPos;
+  final bool isClockWise;
+  final double horizontalOffNeg;
+  final double horizontalOffPos;
+  final double verticalOffNeg;
+  final double verticalOffPos;
+  final String initialMovement;
 
   Saw({
     super.position,
     super.size,
-    required this.isVertical,
-    required this.offNeg,
-    required this.offPos,
+    required this.initialMovement,
+    required this.isClockWise,
+    required this.horizontalOffNeg,
+    required this.horizontalOffPos,
+    required this.verticalOffNeg,
+    required this.verticalOffPos,
   });
 
-  static const double sawSpeed = 0.02;
+  static const double sawSpeed = 0.03;
   static const double moveSpeed = 50.0;
   static const int tileSize = 16;
-  double moveDirection = 1;
-  double rangeNeg = 0;
-  double rangePos = 0;
+  late MovementState movementState;
+  double horizontalRangeNeg = 0;
+  double horizontalRangePos = 0;
+  double verticalRangeNeg = 0;
+  double verticalRangePos = 0;
 
   @override
   Future<void> onLoad() async {
@@ -30,12 +40,20 @@ class Saw extends SpriteAnimationComponent
 
     add(CircleHitbox(collisionType: CollisionType.passive));
 
-    if (isVertical) {
-      rangeNeg = position.y - offNeg * tileSize;
-      rangePos = position.y + offPos * tileSize;
-    } else {
-      rangeNeg = position.x - offNeg * tileSize;
-      rangePos = position.x + offPos * tileSize;
+    verticalRangeNeg = position.y - verticalOffNeg * tileSize;
+    verticalRangePos = position.y + verticalOffPos * tileSize;
+    horizontalRangeNeg = position.x - horizontalOffNeg * tileSize;
+    horizontalRangePos = position.x + horizontalOffPos * tileSize;
+
+    switch (initialMovement) {
+      case 'movingRight':
+        movementState = MovementState.movingRight;
+      case 'movingLeft':
+        movementState = MovementState.movingLeft;
+      case 'movingUp':
+        movementState = MovementState.movingUp;
+      case 'movingDown':
+        movementState = MovementState.movingDown;
     }
 
     return super.onLoad();
@@ -43,30 +61,54 @@ class Saw extends SpriteAnimationComponent
 
   @override
   void update(double dt) {
-    if (isVertical) {
-      _moveVertically(dt);
-    } else {
-      _moveHorizontally(dt);
+    switch (movementState) {
+      case MovementState.movingRight:
+        _moveHorizontally(dt, isPositive: true);
+        if (position.x >= horizontalRangePos) {
+          // Transition based on movement direction
+          movementState =
+              isClockWise ? MovementState.movingDown : MovementState.movingUp;
+        }
+        break;
+
+      case MovementState.movingDown:
+        _moveVertically(dt, isPositive: true);
+        if (position.y >= verticalRangePos) {
+          movementState = isClockWise
+              ? MovementState.movingLeft
+              : MovementState.movingRight;
+        }
+        break;
+
+      case MovementState.movingLeft:
+        _moveHorizontally(dt, isPositive: false);
+        if (position.x <= horizontalRangeNeg) {
+          movementState =
+              isClockWise ? MovementState.movingUp : MovementState.movingDown;
+        }
+        break;
+
+      case MovementState.movingUp:
+        _moveVertically(dt, isPositive: false);
+        if (position.y <= verticalRangeNeg) {
+          movementState = isClockWise
+              ? MovementState.movingRight
+              : MovementState.movingLeft;
+        }
+        break;
     }
+
     super.update(dt);
   }
 
-  void _moveVertically(double dt) {
-    if (position.y >= rangePos) {
-      moveDirection = -1;
-    } else if (position.y <= rangeNeg) {
-      moveDirection = 1;
-    }
-    position.y += moveDirection * moveSpeed * dt;
+  void _moveHorizontally(double dt, {required bool isPositive}) {
+    final direction = isPositive ? 1 : -1;
+    position.x += direction * moveSpeed * dt;
   }
 
-  void _moveHorizontally(double dt) {
-    if (position.x >= rangePos) {
-      moveDirection = -1;
-    } else if (position.x <= rangeNeg) {
-      moveDirection = 1;
-    }
-    position.x += moveDirection * moveSpeed * dt;
+  void _moveVertically(double dt, {required bool isPositive}) {
+    final direction = isPositive ? 1 : -1;
+    position.y += direction * moveSpeed * dt;
   }
 
   SpriteAnimation _spriteAnimation(String name, int amount,
@@ -74,10 +116,11 @@ class Saw extends SpriteAnimationComponent
     return SpriteAnimation.fromFrameData(
       game.images.fromCache('Traps/Saw/$name.png'),
       SpriteAnimationData.sequenced(
-          amount: amount,
-          stepTime: sawSpeed,
-          textureSize: Vector2.all(textureSize),
-          loop: loop),
+        amount: amount,
+        stepTime: sawSpeed,
+        textureSize: Vector2.all(textureSize),
+        loop: loop,
+      ),
     );
   }
 }
