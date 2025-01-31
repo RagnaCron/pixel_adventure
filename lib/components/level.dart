@@ -75,6 +75,7 @@ class Level extends World with HasGameReference<PixelAdventure> {
             final spikes = Spikes(
               position: spawnPoint.position,
               size: spawnPoint.size,
+              isUpSideDown: spawnPoint.properties.getValue('isUpSideDown'),
             );
             add(spikes);
 

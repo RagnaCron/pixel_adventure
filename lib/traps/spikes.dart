@@ -6,15 +6,19 @@ import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 
 class Spikes extends SpriteComponent
     with HasGameReference<PixelAdventure>, CollisionCallbacks {
+
+  bool isUpSideDown;
+
   Spikes({
     super.position,
     super.size,
+    required this.isUpSideDown,
   });
 
   final hitBox = CustomHitBox(
-    offsetX: 2,
+    offsetX: 3,
     offsetY: 8,
-    width: 12,
+    width: 10,
     height: 8,
   );
 
@@ -33,6 +37,10 @@ class Spikes extends SpriteComponent
         size: Vector2(hitBox.width, hitBox.height),
       ),
     );
+
+    if (isUpSideDown) {
+      flipVerticallyAroundCenter();
+    }
 
     return super.onLoad();
   }
