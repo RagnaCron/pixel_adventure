@@ -15,6 +15,7 @@ enum PlayerState {
   idle,
   running,
   jumping,
+  doubleJumping,
   falling,
   hit,
   appearing,
@@ -22,10 +23,7 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with
-        KeyboardHandler,
-        HasGameReference<PixelAdventure>,
-        CollisionCallbacks {
+    with KeyboardHandler, HasGameReference<PixelAdventure>, CollisionCallbacks {
   String character;
 
   Player({
@@ -39,6 +37,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
+  late final SpriteAnimation doubleJumpingAnimation;
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
@@ -46,7 +45,6 @@ class Player extends SpriteAnimationGroupComponent
 
   final double _gravity = 9.8;
 
-  // todo: check the jumpforce, as this seams to have some kind of problem depending on the OS it is running on, for mac os is would be ok to have 260, but not on windows 11...
   final double _jumpForce = 320;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
@@ -54,6 +52,8 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
+  int jumpCount = 0;
+  final int maxJumpCount = 2;
   CustomHitBox hitBox = CustomHitBox(
     offsetX: 10,
     offsetY: 4,
@@ -105,20 +105,17 @@ class Player extends SpriteAnimationGroupComponent
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalMovement = 0;
-    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA);
+    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD);
 
-    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowRight);
-
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.keyW) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
-        keysPressed.contains(LogicalKeyboardKey.space);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     horizontalMovement += isLeftKeyPressed ? -1 : 0;
     horizontalMovement += isRightKeyPressed ? 1 : 0;
 
-    //return super.onKeyEvent(event, keysPressed);
+    // todo: check documentation on key events, and how they are handled, as there is a noisy beeping sound on Mac if super is called.
+    // this may be due to the event not being handled properly...?? as the event is passed on to the next handler ??(touch, gamepad, and so on).
+    // return super.onKeyEvent(event, keysPressed);
     return false;
   }
 
@@ -149,6 +146,7 @@ class Player extends SpriteAnimationGroupComponent
     idleAnimation = _spriteAnimation('Idle', 11);
     runningAnimation = _spriteAnimation('Run', 12);
     jumpingAnimation = _spriteAnimation('Jump', 1);
+    doubleJumpingAnimation = _spriteAnimation('Double Jump', 6, loop: false);
     fallingAnimation = _spriteAnimation('Fall', 1);
     hitAnimation = _spriteAnimation('Hit', 7, loop: false);
     appearingAnimation = _spriteSpecialAnimation('Appearing', 7, loop: false);
@@ -160,6 +158,7 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.idle: idleAnimation,
       PlayerState.running: runningAnimation,
       PlayerState.jumping: jumpingAnimation,
+      PlayerState.doubleJumping: doubleJumpingAnimation,
       PlayerState.falling: fallingAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
@@ -191,14 +190,18 @@ class Player extends SpriteAnimationGroupComponent
 
     // Check if jumping
     if (velocity.y < 0) {
-      playerState = PlayerState.jumping;
+      if (jumpCount == 1) {
+        playerState = PlayerState.jumping;
+      } else if (jumpCount == 2) {
+        playerState = PlayerState.doubleJumping;
+      }
     }
 
     current = playerState;
   }
 
   void _updatePlayerMovement(double dt) {
-    if (hasJumped && isOnGround) {
+    if (hasJumped && jumpCount < maxJumpCount) {
       _playerJump(dt);
     }
     velocity.x = horizontalMovement * moveSpeed;
@@ -208,14 +211,19 @@ class Player extends SpriteAnimationGroupComponent
   // IsolateCallback callback = FlameAudio.play('jump.wav', volume: game.soundVolume);
 
   void _playerJump(double dt) {
-    if (game.playSound) {
-      // isolateCompute(() => FlameAudio.play('jump.wav', volume: game.soundVolume));
-      FlameAudio.play('jump.wav', volume: game.soundVolume);
+    if (jumpCount < maxJumpCount) {
+      if (game.playSound) {
+        // isolateCompute(() => FlameAudio.play('jump.wav', volume: game.soundVolume));
+        FlameAudio.play('jump.wav', volume: game.soundVolume);
+      }
+
+      velocity.y = -_jumpForce;
+      position.y += velocity.y * dt;
+      isOnGround = false;
+      hasJumped = false;
+
+      jumpCount++;
     }
-    velocity.y = -_jumpForce;
-    position.y += velocity.y * dt;
-    isOnGround = false;
-    hasJumped = false;
   }
 
   SpriteAnimation _spriteAnimation(
@@ -281,6 +289,7 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
+            jumpCount = 0;
           }
         }
       } else {
@@ -289,6 +298,7 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
+            jumpCount = 0;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
