@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
-import 'package:pixel_adventure/components/checkpoint.dart';
+import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';

@@ -7,7 +7,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:pixel_adventure/hud/jump_button.dart';
 import 'package:pixel_adventure/players/player.dart';
-import 'package:pixel_adventure/components/level.dart';
+import 'package:pixel_adventure/levels/level.dart';
 
 class PixelAdventure extends FlameGame
     with

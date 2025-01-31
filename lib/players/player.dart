@@ -2,7 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
-import 'package:pixel_adventure/components/checkpoint.dart';
+import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
