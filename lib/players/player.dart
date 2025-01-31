@@ -49,7 +49,7 @@ class Player extends SpriteAnimationGroupComponent
   final double _jumpForce = 320;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0; // -1 (facing left), 1 (facing right)
-  final double _moveSpeed = 100;
+  final double _moveSpeed = 120;
   Vector2 velocity = Vector2.zero();
   bool isOnGround =
       false; // todo: check if this can be removed, as it seams no longer needed, due to the double jumping..
@@ -187,6 +187,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerMovement(double dt) {
+    // Set the initial move velocity.x as it could be reset in _playerWallJump.
     velocity.x = horizontalMovement * _moveSpeed;
 
     if (hasJumped) {
@@ -196,12 +197,8 @@ class Player extends SpriteAnimationGroupComponent
         _playerWallJump();
       }
     }
-
-    // The logic is broken and has a bug, seams not to turn of in _playerWallJump..
-    // this is probably due to the collision handling where we turn of, but in the
-    // moment we jump of the wall, it sets it one more time to true and the
-    // wall slide animation plays some more... thus we set the isTouchingWall to false
-    // AGAIN.... TODO: fix this somehow
+    // Setting it to falls, if we move the player, else
+    // there will be an animation bug.
     isTouchingWall = false;
 
     position.x += velocity.x * dt;
@@ -226,10 +223,8 @@ class Player extends SpriteAnimationGroupComponent
     if (game.playSound) {
       FlameAudio.play('jump.wav', volume: game.soundVolume);
     }
-
+    hasJumped = false;
     velocity.y = -_wallJumpForceY;
-
-    isTouchingWall = false;
   }
 
   void _checkHorizontalCollisions() {
@@ -275,7 +270,6 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
-            isTouchingWall = false;
           }
         }
       } else {
@@ -285,7 +279,6 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
-            isTouchingWall = false;
           }
           if (velocity.y < 0) {
             velocity.y = 0;

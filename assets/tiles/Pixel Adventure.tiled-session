@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level-01.tmx",
+    "activeFile": "level-02.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -31,15 +31,18 @@
                 2
             ],
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 309.5,
                 "y": 322.5
             }
         },
         "level-02.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
             "scale": 2.339375,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 320.1709858402351,
                 "y": 183.80977825273843
@@ -62,8 +65,8 @@
     "property.type": "float",
     "recentFiles": [
         "PixelAdventure.tsx",
-        "level-02.tmx",
         "level-01.tmx",
+        "level-02.tmx",
         "C:/Users/Osiris/Downloads/Level-02.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
