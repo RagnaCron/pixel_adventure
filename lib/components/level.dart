@@ -7,7 +7,7 @@ import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
-import 'package:pixel_adventure/components/fruit.dart';
+import 'package:pixel_adventure/collectables/fruit.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/traps/spikes.dart';

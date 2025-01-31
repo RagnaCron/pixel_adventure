@@ -6,9 +6,9 @@ import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
-import 'package:pixel_adventure/components/fruit.dart';
+import 'package:pixel_adventure/collectables/fruit.dart';
 import 'package:pixel_adventure/traps/saw.dart';
-import 'package:pixel_adventure/components/utils.dart';
+import 'package:pixel_adventure/utils/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 enum PlayerState {

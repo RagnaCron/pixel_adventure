@@ -5,7 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:pixel_adventure/components/jump_button.dart';
+import 'package:pixel_adventure/hud/jump_button.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
@@ -22,7 +22,7 @@ class PixelAdventure extends FlameGame
   bool showControls = false;
 
   List<String> levelNames = [
-    'level-02',
+    'level-01',
     'level-02',
   ];
   int currentLevelIndex = 0;

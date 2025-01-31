@@ -23,13 +23,14 @@ class Checkpoint extends SpriteAnimationGroupComponent
 
   final hitBox = CustomHitBox(
     offsetX: 19,
-    offsetY: 18,
+    offsetY: 59,
     width: 9,
-    height: 46,
+    height: 5,
   );
 
   @override
   Future<void> onLoad() async {
+    debugMode = true;
     priority = -1;
 
     _addAnimations();
