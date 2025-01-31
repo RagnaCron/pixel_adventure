@@ -161,14 +161,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.7"
-  flame_isolate:
-    dependency: "direct main"
-    description:
-      name: flame_isolate
-      sha256: "95b71941ec3040b9257e6c00d303c0d5764b128b351da4ef1779342453975588"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.2+4"
   flame_tiled:
     dependency: "direct main"
     description:
@@ -216,14 +208,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.2"
-  integral_isolates:
-    dependency: transitive
-    description:
-      name: integral_isolates
-      sha256: "62b1b45ea6350edc92d555aa1a98cbda09836b42e51e19e39d49bc39a686e601"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.1"
   leak_tracker:
     dependency: transitive
     description:

@@ -34,18 +34,20 @@ class Checkpoint extends SpriteAnimationGroupComponent
 
     _addAnimations();
 
-    add(RectangleHitbox(
-      collisionType: CollisionType.passive,
-      position:
-      Vector2(hitBox.offsetX, hitBox.offsetY),
-      size: Vector2(hitBox.width, hitBox.height),
-    ));
+    add(
+      RectangleHitbox(
+        collisionType: CollisionType.passive,
+        position: Vector2(hitBox.offsetX, hitBox.offsetY),
+        size: Vector2(hitBox.width, hitBox.height),
+      ),
+    );
 
     return super.onLoad();
   }
 
   @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       _reachedCheckpoint();
     }
@@ -86,6 +88,4 @@ class Checkpoint extends SpriteAnimationGroupComponent
           loop: loop),
     );
   }
-
-
 }

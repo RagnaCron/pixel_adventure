@@ -10,6 +10,7 @@ import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/components/fruit.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
+import 'package:pixel_adventure/traps/spikes.dart';
 
 class Level extends World with HasGameReference<PixelAdventure> {
   final String levelName;
@@ -69,6 +70,13 @@ class Level extends World with HasGameReference<PixelAdventure> {
               offPos: spawnPoint.properties.getValue('offPos'),
             );
             add(saw);
+
+          case 'Spikes':
+            final spikes = Spikes(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+            );
+            add(spikes);
 
           case 'Checkpoint':
             final checkpoint = Checkpoint(
