@@ -16,6 +16,7 @@ enum PlayerState {
   running,
   jumping,
   doubleJumping,
+  wallSliding,
   falling,
   hit,
   appearing,
@@ -38,22 +39,28 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation doubleJumpingAnimation;
+  late final SpriteAnimation wallSlidingAnimation;
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
   late final SpriteAnimation disappearingAnimation;
 
-  final double _gravity = 9.8;
-
+  final double _gravity = 11;
   final double _jumpForce = 320;
   final double _terminalVelocity = 300;
-  double horizontalMovement = 0;
-  double moveSpeed = 100;
+  double horizontalMovement = 0; // -1 (facing left), 1 (facing right)
+  final double _moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
-  bool isOnGround = false;
+  bool isOnGround =
+      false; // todo: check if this can be removed, as it seams no longer needed, due to the double jumping..
   bool hasJumped = false;
   int jumpCount = 0;
   final int maxJumpCount = 2;
+  bool isTouchingWall = false;
+  int wallDirection =
+      0; // -1 (left wall), 1 (right wall), 0 (not touching any wall)
+  final double _wallSlideGravity = 0.5;
+  final double _wallJumpForceY = 300;
   CustomHitBox hitBox = CustomHitBox(
     offsetX: 10,
     offsetY: 4,
@@ -104,11 +111,13 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    bool isKeyDown = event is KeyDownEvent;
+
     horizontalMovement = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA);
     final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD);
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+    hasJumped = isKeyDown && keysPressed.contains(LogicalKeyboardKey.space);
 
     horizontalMovement += isLeftKeyPressed ? -1 : 0;
     horizontalMovement += isRightKeyPressed ? 1 : 0;
@@ -142,33 +151,6 @@ class Player extends SpriteAnimationGroupComponent
     super.onCollisionStart(intersectionPoints, other);
   }
 
-  void _loadAllAnimations() {
-    idleAnimation = _spriteAnimation('Idle', 11);
-    runningAnimation = _spriteAnimation('Run', 12);
-    jumpingAnimation = _spriteAnimation('Jump', 1);
-    doubleJumpingAnimation = _spriteAnimation('Double Jump', 6, loop: false);
-    fallingAnimation = _spriteAnimation('Fall', 1);
-    hitAnimation = _spriteAnimation('Hit', 7, loop: false);
-    appearingAnimation = _spriteSpecialAnimation('Appearing', 7, loop: false);
-    disappearingAnimation =
-        _spriteSpecialAnimation('Disappearing', 7, loop: false);
-
-    // List of all animations
-    animations = {
-      PlayerState.idle: idleAnimation,
-      PlayerState.running: runningAnimation,
-      PlayerState.jumping: jumpingAnimation,
-      PlayerState.doubleJumping: doubleJumpingAnimation,
-      PlayerState.falling: fallingAnimation,
-      PlayerState.hit: hitAnimation,
-      PlayerState.appearing: appearingAnimation,
-      PlayerState.disappearing: disappearingAnimation,
-    };
-
-    // Set current animation
-    current = PlayerState.appearing;
-  }
-
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
@@ -179,10 +161,14 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     // Check if moving, set running
-    if (velocity.x > 0 || velocity.x < 0) {
+    if (velocity.x != 0) {
       playerState = PlayerState.running;
     }
 
+    // Check if wall sliding
+    if (isTouchingWall && velocity.y > 0) {
+      playerState = PlayerState.wallSliding;
+    } else
     // Check if falling
     if (velocity.y > 0) {
       playerState = PlayerState.falling;
@@ -192,7 +178,7 @@ class Player extends SpriteAnimationGroupComponent
     if (velocity.y < 0) {
       if (jumpCount == 1) {
         playerState = PlayerState.jumping;
-      } else if (jumpCount == 2) {
+      } else if (jumpCount == 2 && !isTouchingWall) {
         playerState = PlayerState.doubleJumping;
       }
     }
@@ -201,19 +187,29 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerMovement(double dt) {
-    if (hasJumped && jumpCount < maxJumpCount) {
-      _playerJump(dt);
+    velocity.x = horizontalMovement * _moveSpeed;
+
+    if (hasJumped) {
+      if (jumpCount < maxJumpCount) {
+        _playerJump(dt);
+      } else if (isTouchingWall) {
+        _playerWallJump();
+      }
     }
-    velocity.x = horizontalMovement * moveSpeed;
+
+    // The logic is broken and has a bug, seams not to turn of in _playerWallJump..
+    // this is probably due to the collision handling where we turn of, but in the
+    // moment we jump of the wall, it sets it one more time to true and the
+    // wall slide animation plays some more... thus we set the isTouchingWall to false
+    // AGAIN.... TODO: fix this somehow
+    isTouchingWall = false;
+
     position.x += velocity.x * dt;
   }
-
-  // IsolateCallback callback = FlameAudio.play('jump.wav', volume: game.soundVolume);
 
   void _playerJump(double dt) {
     if (jumpCount < maxJumpCount) {
       if (game.playSound) {
-        // isolateCompute(() => FlameAudio.play('jump.wav', volume: game.soundVolume));
         FlameAudio.play('jump.wav', volume: game.soundVolume);
       }
 
@@ -226,36 +222,14 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  SpriteAnimation _spriteAnimation(
-    String state,
-    int amount, {
-    bool loop = true,
-  }) {
-    return SpriteAnimation.fromFrameData(
-      game.images.fromCache("Main Characters/$character/$state (32x32).png"),
-      SpriteAnimationData.sequenced(
-        amount: amount,
-        stepTime: stepTime,
-        textureSize: Vector2.all(32),
-        loop: loop,
-      ),
-    );
-  }
+  void _playerWallJump() {
+    if (game.playSound) {
+      FlameAudio.play('jump.wav', volume: game.soundVolume);
+    }
 
-  SpriteAnimation _spriteSpecialAnimation(
-    String state,
-    int amount, {
-    bool loop = true,
-  }) {
-    return SpriteAnimation.fromFrameData(
-      game.images.fromCache("Main Characters/$state (96x96).png"),
-      SpriteAnimationData.sequenced(
-        amount: amount,
-        stepTime: stepTime,
-        textureSize: Vector2.all(96),
-        loop: loop,
-      ),
-    );
+    velocity.y = -_wallJumpForceY;
+
+    isTouchingWall = false;
   }
 
   void _checkHorizontalCollisions() {
@@ -265,10 +239,16 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - hitBox.offsetX - hitBox.width;
+            isTouchingWall = true;
+            wallDirection = 1;
+            jumpCount = 0;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
             position.x = block.x + block.width + hitBox.width + hitBox.offsetX;
+            isTouchingWall = true;
+            wallDirection = -1;
+            jumpCount = 0;
           }
         }
       }
@@ -276,7 +256,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _applyGravity(double dt) {
-    velocity.y += _gravity;
+    if (isTouchingWall && velocity.y > 0) {
+      velocity.y += _wallSlideGravity;
+    } else {
+      velocity.y += _gravity;
+    }
+
     velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
     position.y += velocity.y * dt;
   }
@@ -290,6 +275,7 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
+            isTouchingWall = false;
           }
         }
       } else {
@@ -299,6 +285,7 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
+            isTouchingWall = false;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
@@ -356,5 +343,66 @@ class Player extends SpriteAnimationGroupComponent
 
   void collidedWithEnemy() {
     _respawn();
+  }
+
+  void _loadAllAnimations() {
+    idleAnimation = _spriteAnimation('Idle', 11);
+    runningAnimation = _spriteAnimation('Run', 12);
+    jumpingAnimation = _spriteAnimation('Jump', 1);
+    doubleJumpingAnimation = _spriteAnimation('Double Jump', 6, loop: false);
+    wallSlidingAnimation = _spriteAnimation('Wall Jump', 5);
+    fallingAnimation = _spriteAnimation('Fall', 1);
+    hitAnimation = _spriteAnimation('Hit', 7, loop: false);
+    appearingAnimation = _spriteSpecialAnimation('Appearing', 7, loop: false);
+    disappearingAnimation =
+        _spriteSpecialAnimation('Disappearing', 7, loop: false);
+
+    // List of all animations
+    animations = {
+      PlayerState.idle: idleAnimation,
+      PlayerState.running: runningAnimation,
+      PlayerState.jumping: jumpingAnimation,
+      PlayerState.doubleJumping: doubleJumpingAnimation,
+      PlayerState.wallSliding: wallSlidingAnimation,
+      PlayerState.falling: fallingAnimation,
+      PlayerState.hit: hitAnimation,
+      PlayerState.appearing: appearingAnimation,
+      PlayerState.disappearing: disappearingAnimation,
+    };
+
+    // Set current animation
+    current = PlayerState.appearing;
+  }
+
+  SpriteAnimation _spriteAnimation(
+    String state,
+    int amount, {
+    bool loop = true,
+  }) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache("Main Characters/$character/$state (32x32).png"),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2.all(32),
+        loop: loop,
+      ),
+    );
+  }
+
+  SpriteAnimation _spriteSpecialAnimation(
+    String state,
+    int amount, {
+    bool loop = true,
+  }) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache("Main Characters/$state (96x96).png"),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
+        loop: loop,
+      ),
+    );
   }
 }

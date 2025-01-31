@@ -22,8 +22,8 @@ class PixelAdventure extends FlameGame
   bool showControls = false;
 
   List<String> levelNames = [
-    'level-01',
-    'level-01',
+    'level-02',
+    'level-02',
   ];
   int currentLevelIndex = 0;
 
