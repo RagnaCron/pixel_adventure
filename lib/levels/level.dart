@@ -12,6 +12,7 @@ import 'package:pixel_adventure/collectables/fruit.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/traps/spikes.dart';
+import 'package:pixel_adventure/traps/trampoline.dart';
 
 class Level extends World with HasGameReference<PixelAdventure> {
   final String levelName;
@@ -107,6 +108,13 @@ class Level extends World with HasGameReference<PixelAdventure> {
               offPos: spawnPoint.properties.getValue('offPos'),
             );
             add(mushroom);
+
+          case 'Trampoline':
+            final trampoline = Trampoline(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+            );
+            add(trampoline);
         }
       }
     }

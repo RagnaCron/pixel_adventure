@@ -5,43 +5,23 @@
     ],
     "fileStates": {
         "PixelAdventure.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 1
-        },
-        "level-01.tmx": {
-            "expandedObjectLayers": [
-                2
-            ],
-            "scale": 1.248359375,
-            "selectedLayer": 1,
-            "viewCenter": {
-                "x": 320.02002628449844,
-                "y": 184.2418173853182
-            }
+            "scaleInDock": 1
         },
         "level-02.tmx": {
-            "expandedObjectLayers": [
-                2,
-                3
-            ],
-            "scale": 1.24,
+            "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 322.1774193548387,
-                "y": 194.35483870967744
+                "x": 320.09965742759266,
+                "y": 184.16692619121773
             }
         }
     },
     "openFiles": [
-        "PixelAdventure.tsx",
-        "level-01.tmx",
         "level-02.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
-    "property.type": "float",
+    "property.type": "int",
     "recentFiles": [
-        "PixelAdventure.tsx",
-        "level-01.tmx",
         "level-02.tmx"
     ]
 }

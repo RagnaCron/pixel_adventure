@@ -5,7 +5,7 @@ import 'package:pixel_adventure/pixel_adventure.dart';
 enum MovementState { movingRight, movingLeft, movingUp, movingDown }
 
 class Saw extends SpriteAnimationComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure> {
   final bool isClockWise;
   final double horizontalOffNeg;
   final double horizontalOffPos;

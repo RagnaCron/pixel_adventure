@@ -44,12 +44,12 @@ class Spikes extends SpriteComponent
     return super.onLoad();
   }
 
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      other.collidedWithEnemy();
-    }
+ @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+   if (other is Player) {
+     other.collidedWithEnemy();
+   }
 
-    super.onCollision(intersectionPoints, other);
+    super.onCollisionStart(intersectionPoints, other);
   }
 }

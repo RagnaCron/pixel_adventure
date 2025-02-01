@@ -36,5 +36,6 @@ flutter:
     - assets/images/Items/Checkpoints/Checkpoint/
     - assets/images/Traps/Saw/
     - assets/images/Traps/Spikes/
+    - assets/images/Traps/Trampoline/
     - assets/tiles/
     - assets/audio/

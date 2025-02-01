@@ -9,6 +9,7 @@ import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';
 import 'package:pixel_adventure/traps/saw.dart';
+import 'package:pixel_adventure/traps/trampoline.dart';
 import 'package:pixel_adventure/utils/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -152,8 +153,26 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Mushroom) {
         other.collidedWithPlayer();
       }
+
+      if (other is Trampoline) {
+        other.hasBoosted = true;
+        other.collideWithPlayer();
+        _boost(other);
+      }
     }
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    if (other is Trampoline) {
+      other.hasBoosted = false;
+    }
+    super.onCollisionEnd(other);
+  }
+
+  void _boost(Trampoline trampoline) {
+
   }
 
   void _updatePlayerState() {
