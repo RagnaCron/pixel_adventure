@@ -1,8 +1,13 @@
 {
-    "activeFile": "",
+    "activeFile": "level-02.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "PixelAdventure.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "level-01.tmx": {
             "expandedObjectLayers": [
                 2
@@ -28,9 +33,15 @@
         }
     },
     "openFiles": [
+        "PixelAdventure.tsx",
+        "level-01.tmx",
+        "level-02.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "PixelAdventure.tsx",
+        "level-01.tmx",
+        "level-02.tmx"
     ]
 }
