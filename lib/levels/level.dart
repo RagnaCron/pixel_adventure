@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
@@ -97,6 +98,15 @@ class Level extends World with HasGameReference<PixelAdventure> {
               offPos: spawnPoint.properties.getValue('offPos'),
             );
             add(chicken);
+
+          case 'Mushroom':
+            final mushroom = Mushroom(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              offNeg: spawnPoint.properties.getValue('offNeg'),
+              offPos: spawnPoint.properties.getValue('offPos'),
+            );
+            add(mushroom);
         }
       }
     }

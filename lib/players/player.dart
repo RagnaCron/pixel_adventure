@@ -4,6 +4,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
+import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';
@@ -145,6 +146,10 @@ class Player extends SpriteAnimationGroupComponent
       }
 
       if (other is Chicken) {
+        other.collidedWithPlayer();
+      }
+
+      if (other is Mushroom) {
         other.collidedWithPlayer();
       }
     }

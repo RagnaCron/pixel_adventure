@@ -1,0 +1,36 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "level-01.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.248359375,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 320.02002628449844,
+                "y": 184.2418173853182
+            }
+        },
+        "level-02.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.24,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 322.1774193548387,
+                "y": 194.35483870967744
+            }
+        }
+    },
+    "openFiles": [
+    ],
+    "project": "Pixel Adventure.tiled-project",
+    "property.type": "float",
+    "recentFiles": [
+    ]
+}

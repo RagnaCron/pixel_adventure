@@ -30,7 +30,6 @@ class Checkpoint extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
     priority = -1;
 
     _addAnimations();
