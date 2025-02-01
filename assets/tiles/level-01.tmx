@@ -52,7 +52,7 @@
     <property name="offPos" type="float" value="5"/>
    </properties>
   </object>
-  <object id="74" name="Saw" type="Saw" x="304" y="288" width="32" height="32">
+  <object id="74" name="Saw" type="Saw" x="288" y="288" width="32" height="32">
    <properties>
     <property name="horizontalOffNeg" type="float" value="7"/>
     <property name="horizontalOffPos" type="float" value="7"/>
