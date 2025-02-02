@@ -30,7 +30,6 @@ class Trampoline extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    // debugMode = true;
     player = game.player;
 
     idleAnimation = _spriteAnimation('Idle', 1);

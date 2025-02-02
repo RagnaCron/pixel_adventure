@@ -2,7 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
-enum MovementState { movingRight, movingLeft, movingUp, movingDown }
+enum MovementState { movingRight, movingLeft, movingUp, movingDown, none }
 
 class Saw extends SpriteAnimationComponent
     with HasGameReference<PixelAdventure> {
@@ -54,6 +54,8 @@ class Saw extends SpriteAnimationComponent
         movementState = MovementState.movingUp;
       case 'movingDown':
         movementState = MovementState.movingDown;
+      default:
+        movementState = MovementState.none;
     }
 
     return super.onLoad();
@@ -65,11 +67,9 @@ class Saw extends SpriteAnimationComponent
       case MovementState.movingRight:
         _moveHorizontally(dt, isPositive: true);
         if (position.x >= horizontalRangePos) {
-          // Transition based on movement direction
           movementState =
               isClockWise ? MovementState.movingDown : MovementState.movingUp;
         }
-        break;
 
       case MovementState.movingDown:
         _moveVertically(dt, isPositive: true);
@@ -78,7 +78,6 @@ class Saw extends SpriteAnimationComponent
               ? MovementState.movingLeft
               : MovementState.movingRight;
         }
-        break;
 
       case MovementState.movingLeft:
         _moveHorizontally(dt, isPositive: false);
@@ -86,7 +85,6 @@ class Saw extends SpriteAnimationComponent
           movementState =
               isClockWise ? MovementState.movingUp : MovementState.movingDown;
         }
-        break;
 
       case MovementState.movingUp:
         _moveVertically(dt, isPositive: false);
@@ -95,6 +93,8 @@ class Saw extends SpriteAnimationComponent
               ? MovementState.movingRight
               : MovementState.movingLeft;
         }
+
+      default:
         break;
     }
 

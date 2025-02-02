@@ -6,6 +6,7 @@ import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
+import 'package:pixel_adventure/tiles/platform.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';
@@ -67,10 +68,13 @@ class Level extends World with HasGameReference<PixelAdventure> {
             final saw = Saw(
               position: spawnPoint.position,
               size: spawnPoint.size,
-              initialMovement: spawnPoint.properties.getValue('initialMovement'),
+              initialMovement:
+                  spawnPoint.properties.getValue('initialMovement'),
               isClockWise: spawnPoint.properties.getValue('isClockWise'),
-              horizontalOffNeg: spawnPoint.properties.getValue('horizontalOffNeg'),
-              horizontalOffPos: spawnPoint.properties.getValue('horizontalOffPos'),
+              horizontalOffNeg:
+                  spawnPoint.properties.getValue('horizontalOffNeg'),
+              horizontalOffPos:
+                  spawnPoint.properties.getValue('horizontalOffPos'),
               verticalOffNeg: spawnPoint.properties.getValue('verticalOffNeg'),
               verticalOffPos: spawnPoint.properties.getValue('verticalOffPos'),
             );
@@ -115,6 +119,25 @@ class Level extends World with HasGameReference<PixelAdventure> {
               size: spawnPoint.size,
             );
             add(trampoline);
+
+          case 'Platform':
+            final platform = Platform(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              isPlatform: spawnPoint.properties.getValue('isPlatform'),
+              type: spawnPoint.properties.getValue('type'),
+              isClockWise: spawnPoint.properties.getValue('isClockWise'),
+              horizontalOffNeg:
+                  spawnPoint.properties.getValue('horizontalOffNeg'),
+              horizontalOffPos:
+                  spawnPoint.properties.getValue('horizontalOffPos'),
+              verticalOffNeg: spawnPoint.properties.getValue('verticalOffNeg'),
+              verticalOffPos: spawnPoint.properties.getValue('verticalOffPos'),
+              initialMovement:
+                  spawnPoint.properties.getValue('initialMovement'),
+            );
+            collisionBlocks.add(platform as CollisionBlock);
+            add(platform);
         }
       }
     }
@@ -126,7 +149,7 @@ class Level extends World with HasGameReference<PixelAdventure> {
     if (collisionsLayer != null) {
       for (final collision in collisionsLayer.objects) {
         switch (collision.class_) {
-          case ('Platform'):
+          case ('StaticPlatform'):
             final platform = CollisionBlock(
               position: collision.position,
               size: collision.size,
@@ -134,6 +157,8 @@ class Level extends World with HasGameReference<PixelAdventure> {
             );
             collisionBlocks.add(platform);
             add(platform);
+
+
 
           default:
             final block = CollisionBlock(

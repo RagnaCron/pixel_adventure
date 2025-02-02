@@ -37,5 +37,6 @@ flutter:
     - assets/images/Traps/Saw/
     - assets/images/Traps/Spikes/
     - assets/images/Traps/Trampoline/
+    - assets/images/Traps/Platforms/
     - assets/tiles/
     - assets/audio/

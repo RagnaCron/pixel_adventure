@@ -8,6 +8,7 @@ import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';
+import 'package:pixel_adventure/tiles/platform.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/traps/trampoline.dart';
 import 'package:pixel_adventure/utils/utils.dart';
@@ -64,6 +65,8 @@ class Player extends SpriteAnimationGroupComponent
   bool isJumpingFromTrampoline = false;
   final double _wallSlideGravity = 0.5;
   final double _wallJumpForceY = 300;
+  bool isOnMovingPlatform = false;
+
   CustomHitBox hitBox = CustomHitBox(
     offsetX: 10,
     offsetY: 4,
@@ -158,6 +161,10 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Trampoline) {
         other.collideWithPlayer();
       }
+
+      if (other is Platform) {
+        isOnMovingPlatform = true;
+      }
     }
 
     super.onCollisionStart(intersectionPoints, other);
@@ -168,6 +175,10 @@ class Player extends SpriteAnimationGroupComponent
     if (other is Trampoline) {
       await other.animationTicker?.completed;
       other.current = TrampolineState.idle;
+    }
+
+    if (other is Platform) {
+      isOnMovingPlatform = false;
     }
 
     super.onCollisionEnd(other);
@@ -295,6 +306,9 @@ class Player extends SpriteAnimationGroupComponent
             isOnGround = true;
             jumpCount = 0;
             isJumpingFromTrampoline = false;
+          }
+          if (block is Platform) {
+            position.y += 2;
           }
         }
       } else {
