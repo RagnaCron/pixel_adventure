@@ -49,7 +49,7 @@ class Player extends SpriteAnimationGroupComponent
 
   final double _gravity = 11;
   final double _jumpForce = 320;
-  final double _terminalVelocity = 300;
+  final double _terminalVelocity = 400;
   double horizontalMovement = 0; // -1 (facing left), 1 (facing right)
   final double _moveSpeed = 120;
   Vector2 velocity = Vector2.zero();
@@ -61,6 +61,7 @@ class Player extends SpriteAnimationGroupComponent
   bool isTouchingWall = false;
   int wallDirection =
       0; // -1 (left wall), 1 (right wall), 0 (not touching any wall)
+  bool isJumpingFromTrampoline = false;
   final double _wallSlideGravity = 0.5;
   final double _wallJumpForceY = 300;
   CustomHitBox hitBox = CustomHitBox(
@@ -155,24 +156,21 @@ class Player extends SpriteAnimationGroupComponent
       }
 
       if (other is Trampoline) {
-        other.hasBoosted = true;
         other.collideWithPlayer();
-        _boost(other);
       }
     }
+
     super.onCollisionStart(intersectionPoints, other);
   }
 
   @override
-  void onCollisionEnd(PositionComponent other) {
+  void onCollisionEnd(PositionComponent other) async {
     if (other is Trampoline) {
-      other.hasBoosted = false;
+      await other.animationTicker?.completed;
+      other.current = TrampolineState.idle;
     }
+
     super.onCollisionEnd(other);
-  }
-
-  void _boost(Trampoline trampoline) {
-
   }
 
   void _updatePlayerState() {
@@ -275,7 +273,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _applyGravity(double dt) {
-    if (isTouchingWall && velocity.y > 0) {
+    if (isJumpingFromTrampoline) {
+      velocity.y -= _jumpForce;
+    } else if (isTouchingWall && velocity.y > 0) {
       velocity.y += _wallSlideGravity;
     } else {
       velocity.y += _gravity;
@@ -294,6 +294,7 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
+            isJumpingFromTrampoline = false;
           }
         }
       } else {
@@ -303,10 +304,12 @@ class Player extends SpriteAnimationGroupComponent
             position.y = block.y - hitBox.offsetY - hitBox.height;
             isOnGround = true;
             jumpCount = 0;
+            isJumpingFromTrampoline = false;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
             position.y = block.y + block.height - hitBox.offsetY;
+            isJumpingFromTrampoline = false;
           }
         }
       }

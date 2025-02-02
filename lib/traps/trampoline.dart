@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
@@ -16,10 +17,9 @@ class Trampoline extends SpriteAnimationGroupComponent
     super.size,
   });
 
-  bool hasBoosted = false;
-
-  late SpriteAnimation idleAnimation;
-  late SpriteAnimation jumpAnimation;
+  late final SpriteAnimation idleAnimation;
+  late final SpriteAnimation jumpAnimation;
+  late final Player player;
 
   final CustomHitBox hitBox = CustomHitBox(
     offsetX: 4,
@@ -31,6 +31,7 @@ class Trampoline extends SpriteAnimationGroupComponent
   @override
   Future<void> onLoad() async {
     // debugMode = true;
+    player = game.player;
 
     idleAnimation = _spriteAnimation('Idle', 1);
     jumpAnimation = _spriteAnimation('Jump', 8, loop: false);
@@ -53,27 +54,18 @@ class Trampoline extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player && !hasBoosted) {
-      if (other.position.y + other.size.y <= position.y) {
-        hasBoosted = true;
+  void collideWithPlayer() {
+    if (player.velocity.y > 0 && player.y + player.height > position.y) {
+      if (game.playSound) {
+        FlameAudio.play('bounde.wav', volume: game.soundVolume);
       }
+
+      current = TrampolineState.jump;
+      player.jumpCount = 1;
+      player.isJumpingFromTrampoline = true;
+      Future.delayed(const Duration(milliseconds: 200), () => player.isJumpingFromTrampoline = false);
     }
-
-    super.onCollisionStart(intersectionPoints, other);
   }
-
-  @override
-  void onCollisionEnd(PositionComponent other) {
-    if (other is Player) {
-      hasBoosted = false;
-    }
-
-    super.onCollisionEnd(other);
-  }
-
-  void collideWithPlayer() {}
 
   SpriteAnimation _spriteAnimation(String name, int amount,
       {bool loop = true, double textureSize = 28}) {
