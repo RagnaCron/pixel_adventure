@@ -122,6 +122,7 @@ class Level extends World with HasGameReference<PixelAdventure> {
 
           case 'Platform':
             final platform = Platform(
+              key: ComponentKey.unique(),
               position: spawnPoint.position,
               size: spawnPoint.size,
               isPlatform: spawnPoint.properties.getValue('isPlatform'),

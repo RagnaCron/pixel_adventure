@@ -27,6 +27,7 @@ class Platform extends SpriteAnimationGroupComponent
 
 
   Platform({
+    super.key,
     super.position,
     super.size,
     required this.isPlatform,
@@ -99,6 +100,7 @@ class Platform extends SpriteAnimationGroupComponent
     if (other is Player) {
       isPlatformMoving = true;
       current = PlatformState.on;
+      other.platformKey = key;
     }
 
     super.onCollisionStart(intersectionPoints, other);
@@ -114,7 +116,7 @@ class Platform extends SpriteAnimationGroupComponent
             movementState =
                 isClockWise ? MovementState.movingDown : MovementState.movingUp;
           }
-          if (player.isOnMovingPlatform) {
+          if (player.isOnMovingPlatform && player.platformKey == key) {
             player.x += moveSpeed * dt;
           }
 
@@ -125,7 +127,7 @@ class Platform extends SpriteAnimationGroupComponent
                 ? MovementState.movingLeft
                 : MovementState.movingRight;
           }
-          if (player.isOnMovingPlatform) {
+          if (player.isOnMovingPlatform && player.platformKey == key) {
             player.y += moveSpeed * dt;
           }
 
@@ -135,7 +137,7 @@ class Platform extends SpriteAnimationGroupComponent
             movementState =
                 isClockWise ? MovementState.movingUp : MovementState.movingDown;
           }
-          if (player.isOnMovingPlatform) {
+          if (player.isOnMovingPlatform && player.platformKey == key) {
             player.x -= moveSpeed * dt;
           }
 
@@ -146,7 +148,7 @@ class Platform extends SpriteAnimationGroupComponent
                 ? MovementState.movingRight
                 : MovementState.movingLeft;
           }
-          if (player.isOnMovingPlatform) {
+          if (player.isOnMovingPlatform && player.platformKey == key) {
             player.y -= moveSpeed * dt;
           }
       }

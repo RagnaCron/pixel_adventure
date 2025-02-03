@@ -67,6 +67,8 @@ class Player extends SpriteAnimationGroupComponent
   final double _wallJumpForceY = 300;
   bool isOnMovingPlatform = false;
 
+  ComponentKey? platformKey;
+
   CustomHitBox hitBox = CustomHitBox(
     offsetX: 10,
     offsetY: 4,
@@ -256,6 +258,7 @@ class Player extends SpriteAnimationGroupComponent
     if (game.playSound) {
       FlameAudio.play('jump.wav', volume: game.soundVolume);
     }
+
     hasJumped = false;
     velocity.y = -_wallJumpForceY;
   }

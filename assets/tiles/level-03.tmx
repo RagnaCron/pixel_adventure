@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="85">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="86">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <data encoding="csv">
@@ -203,7 +203,7 @@
     <property name="verticalOffPos" type="float" value="5"/>
    </properties>
   </object>
-  <object id="84" name="Platform" type="Platform" x="288" y="128" width="32" height="8">
+  <object id="85" name="Platform" type="Platform" x="320" y="128" width="32" height="8">
    <properties>
     <property name="horizontalOffNeg" type="float" value="0"/>
     <property name="horizontalOffPos" type="float" value="6"/>
