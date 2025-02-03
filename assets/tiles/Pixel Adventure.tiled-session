@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-03.tmx",
+    "activeFile": "level-04.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -15,44 +15,58 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 319.90034257240734,
-                "y": 183.9676113360324
+                "y": 181.77514792899407
             }
         },
         "level-02.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
             "scale": 2.5085937499999997,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 192.53815010900036,
+                "x": 192.53815010900033,
                 "y": 163.83681096231703
             }
         },
         "level-03.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
-            "scale": 2.5085937499999997,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.09965742759266,
-                "y": 214.0641544690128
+                "x": 325.3333333333333,
+                "y": 199.33333333333331
+            }
+        },
+        "level-04.tmx": {
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 1.3151562499999998,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 327.71771414993475,
+                "y": 203.778068195319
             }
         }
     },
     "openFiles": [
         "level-01.tmx",
         "level-02.tmx",
-        "level-03.tmx"
+        "level-03.tmx",
+        "level-04.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
-    "property.type": "bool",
+    "property.type": "float",
     "recentFiles": [
         "level-01.tmx",
         "level-02.tmx",
-        "level-03.tmx"
+        "level-03.tmx",
+        "level-04.tmx"
     ]
 }

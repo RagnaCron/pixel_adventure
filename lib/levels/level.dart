@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/enemies/mushroom.dart';
+import 'package:pixel_adventure/enemies/plant.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
@@ -139,6 +140,15 @@ class Level extends World with HasGameReference<PixelAdventure> {
             );
             collisionBlocks.add(platform as CollisionBlock);
             add(platform);
+
+          case 'Plant':
+            final plant = Plant(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              facingDirection: spawnPoint.properties.getValue('facingDirection'),
+              viewField: spawnPoint.properties.getValue('viewField'),
+            );
+            add(plant);
         }
       }
     }

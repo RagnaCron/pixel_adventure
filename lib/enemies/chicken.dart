@@ -59,8 +59,8 @@ class Chicken extends SpriteAnimationGroupComponent
 
     add(RectangleHitbox(
       collisionType: CollisionType.passive,
-      position: Vector2(hitBox.offsetX, hitBox.offsetY),
-      size: Vector2(hitBox.width, hitBox.height),
+      position: hitBox.position,
+      size: hitBox.size,
       isSolid: true,
     ));
 
