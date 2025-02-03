@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-02.tmx",
+    "activeFile": "level-03.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -44,11 +44,15 @@
         }
     },
     "openFiles": [
-        "level-02.tmx"
+        "level-01.tmx",
+        "level-02.tmx",
+        "level-03.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "level-02.tmx"
+        "level-01.tmx",
+        "level-02.tmx",
+        "level-03.tmx"
     ]
 }
