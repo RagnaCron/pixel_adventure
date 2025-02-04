@@ -39,8 +39,6 @@ class PlantBullet extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
-
     _loadAnimations();
 
     add(hitBox);

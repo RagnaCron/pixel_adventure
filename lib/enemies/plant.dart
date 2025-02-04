@@ -78,7 +78,7 @@ class Plant extends SpriteAnimationGroupComponent
 
   bool playerInRange() {
     double playerOffset = (facingDirection == 'right') ? 0 : -player.width;
-
+    // todo: BUG, if player is behind the plant it shoots, which should not happen...
     if (facingDirection == 'right') {
       return (player.x + playerOffset >= rangeNeg &&
           player.y + player.height > position.y &&
@@ -124,6 +124,8 @@ class Plant extends SpriteAnimationGroupComponent
   }
 
   void _shoot() {
+    // final Vector2 offSetVec = facingDirection == 'left' ? position + hitBox.position : position;
+    // todo: the offset of the bullet position to facing right of the plant is not correct
     final bullet = PlantBullet(
       position: position + hitBox.position,
       size: Vector2.all(16),
