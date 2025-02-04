@@ -48,6 +48,7 @@ class Plant extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
+    debugMode = true;
     player = game.player;
 
     _loadAnimations();
@@ -124,13 +125,15 @@ class Plant extends SpriteAnimationGroupComponent
   }
 
   void _shoot() {
-    // final Vector2 offSetVec = facingDirection == 'left' ? position + hitBox.position : position;
-    // todo: the offset of the bullet position to facing right of the plant is not correct
+    final Vector2 offSetVec = facingDirection == 'left'
+        ? Vector2(position.x + hitBox.offsetX - 8, hitBox.offsetY + position.y)
+        : Vector2(position.x - hitBox.offsetX + 8, hitBox.offsetY + position.y);
     final bullet = PlantBullet(
-      position: position + hitBox.position,
+      position: offSetVec,
       size: Vector2.all(16),
       facingDirection: facingDirection,
     );
+    // Bullet needs ot be added to the world.
     game.world.add(bullet);
   }
 
