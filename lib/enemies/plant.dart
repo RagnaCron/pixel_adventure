@@ -125,11 +125,11 @@ class Plant extends SpriteAnimationGroupComponent
 
   void _shoot() {
     final bullet = PlantBullet(
-      position: hitBox.position,
+      position: position + hitBox.position,
       size: Vector2.all(16),
       facingDirection: facingDirection,
     );
-    add(bullet);
+    game.world.add(bullet);
   }
 
   void _calculateRange() {

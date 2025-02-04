@@ -1,10 +1,10 @@
+import 'dart:core';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/levels/level.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
-import 'package:pixel_adventure/tiles/custom_hitbox.dart';
-import 'package:pixel_adventure/utils/utils.dart';
 
 enum State {
   fly,
@@ -62,7 +62,7 @@ class PlantBullet extends SpriteAnimationGroupComponent
         position.x += -moveSpeed * dt;
       }
       if (facingDirection == 'right') {
-        position.x -= moveSpeed * dt;
+        position.x += moveSpeed * dt;
       }
     }
   }
@@ -70,15 +70,14 @@ class PlantBullet extends SpriteAnimationGroupComponent
   void _checkHorizontalCollision() {
     final level = game.world as Level;
     level.collisionBlocks;
-
-    final bulletX = position.x + hitBox.position.x;
-    final bulletW = hitBox.size.x;
-
     for (final block in level.collisionBlocks) {
-      if (facingDirection == "left") {
-        if (block.width < block.height && block.x + block.width  >= position.x ) {
-          print("hiiiittt!!!!");
-        }
+      if (block.width < block.height &&
+          position.x < block.x + block.width &&
+          position.x + width > block.x &&
+          block.y <= position.y &&
+          block.y + block.height >= position.y) {
+        didNotHit = false;
+        current = State.hit;
       }
     }
   }
