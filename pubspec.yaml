@@ -30,6 +30,7 @@ flutter:
     - assets/images/Enemies/Chicken/
     - assets/images/Enemies/Mushroom/
     - assets/images/Enemies/Plant/
+    - assets/images/Enemies/Rino/
     - assets/images/Terrain/
     - assets/images/Background/
     - assets/images/HUD/

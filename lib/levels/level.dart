@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/enemies/plant.dart';
+import 'package:pixel_adventure/enemies/rino.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
@@ -105,6 +106,15 @@ class Level extends World with HasGameReference<PixelAdventure> {
             );
             add(chicken);
 
+          case 'Rino':
+            final rino = Rino(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              offNeg: spawnPoint.properties.getValue('offNeg'),
+              offPos: spawnPoint.properties.getValue('offPos'),
+            );
+            add(rino);
+
           case 'Mushroom':
             final mushroom = Mushroom(
               position: spawnPoint.position,
@@ -145,7 +155,8 @@ class Level extends World with HasGameReference<PixelAdventure> {
             final plant = Plant(
               position: spawnPoint.position,
               size: spawnPoint.size,
-              facingDirection: spawnPoint.properties.getValue('facingDirection'),
+              facingDirection:
+                  spawnPoint.properties.getValue('facingDirection'),
               viewField: spawnPoint.properties.getValue('viewField'),
             );
             add(plant);
@@ -168,8 +179,6 @@ class Level extends World with HasGameReference<PixelAdventure> {
             );
             collisionBlocks.add(platform);
             add(platform);
-
-
 
           default:
             final block = CollisionBlock(
