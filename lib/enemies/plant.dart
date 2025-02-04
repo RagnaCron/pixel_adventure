@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
+import 'package:pixel_adventure/projectiles/plant_bullet.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 
 enum PlantState {
@@ -47,8 +48,6 @@ class Plant extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
-
     player = game.player;
 
     _loadAnimations();
@@ -72,24 +71,21 @@ class Plant extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!gotStomped && playerInRange()) {
-      current = PlantState.attack;
-    } else {
-      current = PlantState.idle;
-    }
+    _updateState();
+
     super.update(dt);
   }
 
   bool playerInRange() {
-    if (facingDirection == "left") {
-      double playerOffset = 0;
-      return (player.x + playerOffset > rangeNeg &&
+    double playerOffset = (facingDirection == 'right') ? 0 : -player.width;
+
+    if (facingDirection == 'right') {
+      return (player.x + playerOffset >= rangeNeg &&
           player.y + player.height > position.y &&
           player.y < position.y + height);
-    } else if (facingDirection == "right") {
-      double playerOffset = -player.width;
-      return (
-          player.x + playerOffset < rangePos &&
+    }
+    if (facingDirection == 'left') {
+      return (player.x + playerOffset <= rangePos &&
           player.y + player.height > position.y &&
           player.y < position.y + height);
     }
@@ -108,6 +104,32 @@ class Plant extends SpriteAnimationGroupComponent
     } else {
       player.collidedWithEnemy();
     }
+  }
+
+  void _updateState() {
+    if (!gotStomped) {
+      if (playerInRange()) {
+        current = PlantState.attack;
+        animationTicker?.onFrame = (index) {
+          if (index == 5) {
+            _shoot();
+          }
+        };
+      } else {
+        if (animationTicker!.isFirstFrame) {
+          current = PlantState.idle;
+        }
+      }
+    }
+  }
+
+  void _shoot() {
+    final bullet = PlantBullet(
+      position: hitBox.position,
+      size: Vector2.all(16),
+      facingDirection: facingDirection,
+    );
+    add(bullet);
   }
 
   void _calculateRange() {
