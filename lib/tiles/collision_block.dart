@@ -8,7 +8,5 @@ class CollisionBlock extends PositionComponent with CollisionCallbacks {
     super.position,
     super.size,
     this.isPlatform = false,
-  }) {
-    debugMode = true;
-  }
+  });
 }

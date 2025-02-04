@@ -65,6 +65,19 @@ class PlantBullet extends SpriteAnimationGroupComponent
     }
   }
 
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is CollisionBlock) {}
+
+    super.onCollisionStart(intersectionPoints, other);
+  }
+
+  void collideWithPlayer() {
+    _destroyBullet();
+    game.player.collidedWithEnemy();
+  }
+
   void _checkHorizontalCollision() {
     final level = game.world as Level;
     level.collisionBlocks;
@@ -74,18 +87,14 @@ class PlantBullet extends SpriteAnimationGroupComponent
           position.x + width > block.x &&
           block.y <= position.y &&
           block.y + block.height >= position.y) {
-        didNotHit = false;
-        current = State.hit;
+        _destroyBullet();
       }
     }
   }
 
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is CollisionBlock) {}
-
-    super.onCollisionStart(intersectionPoints, other);
+  void _destroyBullet() {
+    didNotHit = false;
+    current = State.hit;
   }
 
   void _loadAnimations() {

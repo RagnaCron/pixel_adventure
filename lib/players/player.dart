@@ -6,6 +6,7 @@ import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/enemies/plant.dart';
+import 'package:pixel_adventure/projectiles/plant_bullet.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';
@@ -171,6 +172,10 @@ class Player extends SpriteAnimationGroupComponent
 
       if (other is Plant) {
         other.collidedWithPlayer();
+      }
+
+      if (other is PlantBullet) {
+        other.collideWithPlayer();
       }
     }
 
