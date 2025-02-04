@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="47">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="56">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <data encoding="csv">
@@ -103,6 +103,15 @@
    </properties>
   </object>
   <object id="45" name="Trampoline" type="Trampoline" x="192" y="208" width="32" height="32"/>
+  <object id="47" name="Orange" type="Fruits" x="304" y="96" width="32" height="32"/>
+  <object id="48" name="Orange" type="Fruits" x="368" y="96" width="32" height="32"/>
+  <object id="49" name="Orange" type="Fruits" x="416" y="272" width="32" height="32"/>
+  <object id="50" name="Orange" type="Fruits" x="480" y="272" width="32" height="32"/>
+  <object id="51" name="Orange" type="Fruits" x="544" y="272" width="32" height="32"/>
+  <object id="52" name="Orange" type="Fruits" x="272" y="224" width="32" height="32"/>
+  <object id="53" name="Orange" type="Fruits" x="112" y="96" width="32" height="32"/>
+  <object id="54" name="Orange" type="Fruits" x="144" y="96" width="32" height="32"/>
+  <object id="55" name="Orange" type="Fruits" x="128" y="128" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="2" x="48" y="48" width="16" height="272"/>

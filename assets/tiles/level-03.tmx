@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="86">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="95">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <data encoding="csv">
@@ -215,6 +215,26 @@
     <property name="verticalOffPos" type="float" value="5"/>
    </properties>
   </object>
+  <object id="86" name="Platform" type="Platform" x="544" y="256" width="32" height="8">
+   <properties>
+    <property name="horizontalOffNeg" type="float" value="20"/>
+    <property name="horizontalOffPos" type="float" value="0"/>
+    <property name="initialMovement" value="movingLeft"/>
+    <property name="isClockWise" type="bool" value="true"/>
+    <property name="isPlatform" type="bool" value="true"/>
+    <property name="type" value="Grey"/>
+    <property name="verticalOffNeg" type="float" value="0"/>
+    <property name="verticalOffPos" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="87" name="Orange" type="Fruits" x="480" y="240" width="32" height="32"/>
+  <object id="88" name="Orange" type="Fruits" x="416" y="240" width="32" height="32"/>
+  <object id="89" name="Orange" type="Fruits" x="352" y="240" width="32" height="32"/>
+  <object id="90" name="Orange" type="Fruits" x="288" y="240" width="32" height="32"/>
+  <object id="91" name="Orange" type="Fruits" x="224" y="240" width="32" height="32"/>
+  <object id="92" name="Orange" type="Fruits" x="352" y="80" width="32" height="32"/>
+  <object id="93" name="Orange" type="Fruits" x="544" y="160" width="32" height="32"/>
+  <object id="94" name="Orange" type="Fruits" x="64" y="224" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="2" x="48" y="48" width="16" height="272"/>

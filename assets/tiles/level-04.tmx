@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="98">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="114">
  <tileset firstgid="1" source="PixelAdventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <data encoding="csv">
@@ -44,6 +44,14 @@
    </properties>
   </object>
   <object id="97" name="Trampoline" type="Trampoline" x="480" y="224" width="32" height="32"/>
+  <object id="106" name="Strawberry" type="Fruits" x="64" y="96" width="32" height="32"/>
+  <object id="107" name="Strawberry" type="Fruits" x="96" y="96" width="32" height="32"/>
+  <object id="108" name="Strawberry" type="Fruits" x="80" y="64" width="32" height="32"/>
+  <object id="109" name="Strawberry" type="Fruits" x="480" y="160" width="32" height="32"/>
+  <object id="110" name="Strawberry" type="Fruits" x="544" y="144" width="32" height="32"/>
+  <object id="111" name="Strawberry" type="Fruits" x="480" y="112" width="32" height="32"/>
+  <object id="112" name="Strawberry" type="Fruits" x="192" y="272" width="32" height="32"/>
+  <object id="113" name="Strawberry" type="Fruits" x="304" y="272" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="2" x="48" y="48" width="16" height="272"/>
