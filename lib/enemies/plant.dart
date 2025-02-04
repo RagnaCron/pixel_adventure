@@ -79,16 +79,17 @@ class Plant extends SpriteAnimationGroupComponent
 
   bool playerInRange() {
     final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-    // final double playerOffset = (facingDirection == 'right') ? 0 : -player.width;
-    // todo: BUG, if player is behind the plant it shoots, which should not happen...
     final bool isInFrame = (player.y + player.height > position.y &&
         player.y < position.y + height);
 
     if (facingDirection == 'right') {
-      return (player.x + playerOffset <= rangePos && isInFrame);
-    }
-    else if (facingDirection == 'left') {
-      return (player.x + playerOffset >= rangeNeg && isInFrame);
+      return (isInFrame &&
+          rangePos >= player.x + playerOffset &&
+          player.x + playerOffset >= position.x);
+    } else if (facingDirection == 'left') {
+      return (isInFrame &&
+          rangeNeg <= player.x + playerOffset &&
+          player.x + playerOffset <= position.x);
     }
 
     return false;
