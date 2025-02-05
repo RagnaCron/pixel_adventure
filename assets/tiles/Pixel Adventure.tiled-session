@@ -9,50 +9,50 @@
         },
         "level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.90034257240734,
-                "y": 183.9676113360324
+                "x": 320.09965742759266,
+                "y": 181.77514792899407
             }
         },
         "level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.90034257240734,
-                "y": 183.9676113360324
+                "x": 320.09965742759266,
+                "y": 184.16692619121773
             }
         },
         "level-03.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.3333333333333,
-                "y": 183.66666666666663
+                "x": 320,
+                "y": 184
             }
         },
         "level-04.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3151562499999998,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.7338719258644,
-                "y": 183.6283711536177
+                "x": 320.1140548889153,
+                "y": 184.00855411666868
             }
         },
         "level-05.tmx": {

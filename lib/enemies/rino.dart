@@ -18,6 +18,7 @@ enum State {
 class Rino extends SpriteAnimationGroupComponent
     with HasGameReference<PixelAdventure>, CollisionCallbacks {
   String facingDirection;
+
   Rino({
     super.position,
     super.size,
@@ -147,22 +148,21 @@ class Rino extends SpriteAnimationGroupComponent
 
   bool playerInSight() {
     final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-    final double rinoOffset = (scale.x > 0) ? 0 : -(width * 2);
+    final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
     if (player.x + playerOffset >= sightLeft &&
         player.x + playerOffset <= sightRight &&
         player.y + player.height > position.y &&
         player.y < position.y + height) {
-      final double startX = position.x + rinoOffset;
-      final double endX = player.x + playerOffset;
       final level = game.world as Level;
+      // todo: the offset of the rino seams to be at miss, about 48 pixels are "out of bound"
       for (final block in level.collisionBlocks) {
-        if (position.x + rinoOffset < player.x + playerOffset &&
-            block) {
-          return false;
-        }
-        if (((startX < endX && block.x > startX && block.x < endX) ||
-                (startX > endX && block.x < startX && block.x > endX))) {
+        if ((position.x + rinoOffset < player.x + playerOffset &&
+                block.x > position.x + rinoOffset &&
+                block.x < player.x + playerOffset) ||
+            (position.x + rinoOffset > player.x + playerOffset &&
+                block.x < position.x + rinoOffset &&
+                block.x > player.x + playerOffset)) {
           return false;
         }
       }
