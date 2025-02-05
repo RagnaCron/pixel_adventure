@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:pixel_adventure/levels/level.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
@@ -16,17 +17,15 @@ enum State {
 
 class Rino extends SpriteAnimationGroupComponent
     with HasGameReference<PixelAdventure>, CollisionCallbacks {
-  double offNeg;
-  double offPos;
-
+  String facingDirection;
   Rino({
     super.position,
     super.size,
-    this.offNeg = 0,
-    this.offPos = 0,
+    required this.facingDirection,
     super.removeOnFinish = const {State.hit: true},
   });
 
+  static const double sightRange = 32; // tiles
   static const int tileSize = 16;
   static const double stepTime = 0.05;
   static const double moveSpeed = 100.0;
@@ -41,16 +40,17 @@ class Rino extends SpriteAnimationGroupComponent
 
   double moveDirection = 1;
   double targetDirection = -1;
-  double rangeNeg = 0;
-  double rangePos = 0;
+  double sightLeft = 0;
+  double sightRight = 0;
   Vector2 velocity = Vector2.zero();
   bool gotStomped = false;
+  bool isMoving = false;
 
   CustomHitBox hitBox = CustomHitBox(
-    offsetX: 4,
-    offsetY: 6,
-    width: 24,
-    height: 26,
+    offsetX: 2,
+    offsetY: 5,
+    width: 44,
+    height: 27,
   );
 
   @override
@@ -60,14 +60,21 @@ class Rino extends SpriteAnimationGroupComponent
     player = game.player;
 
     _loadAnimations();
-    _calculateRange();
+    _calculateSight();
 
-    // add(RectangleHitbox(
-    //   collisionType: CollisionType.passive,
-    //   position: hitBox.position,
-    //   size: hitBox.size,
-    //   isSolid: true,
-    // ));
+    if (facingDirection == 'facingLeft') {
+      flipHorizontallyAroundCenter();
+    }
+    if (facingDirection == 'facingRight') {
+      flipHorizontallyAroundCenter();
+    }
+
+    add(RectangleHitbox(
+      collisionType: CollisionType.active,
+      position: hitBox.position,
+      size: hitBox.size,
+      isSolid: true,
+    ));
 
     return super.onLoad();
   }
@@ -77,44 +84,93 @@ class Rino extends SpriteAnimationGroupComponent
     if (!gotStomped) {
       _updateState();
       _movement(dt);
+      _checkHorizontalCollision();
       // todo: check for horizontal collisions with wall so we can set off a nice animation. with a small bump bag velocity... would be nice!!!
     }
     super.update(dt);
   }
 
+  void _updateState() {
+    if (current != State.hitWall) {
+      current = (velocity.x != 0) ? State.run : State.idle;
+
+      if ((moveDirection > 0 && scale.x > 0) ||
+          (moveDirection < 0 && scale.x < 0)) {
+        flipHorizontallyAroundCenter();
+      }
+    }
+  }
+
   void _movement(double dt) {
     velocity.x = 0;
 
-    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-    double rinoOffset = (scale.x > 0) ? 0 : -width;
+    if (playerInSight() && !isMoving) {
+      final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+      final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
-    if (playerInRange()) {
       targetDirection =
           (player.x + playerOffset < position.x + rinoOffset) ? -1 : 1;
-      velocity.x = targetDirection * moveSpeed;
+      isMoving = true;
+    }
+
+    if (isMoving) {
+      velocity.x = targetDirection * moveSpeed; // Apply movement.
     }
 
     moveDirection = lerpDouble(moveDirection, targetDirection, 0.1) ?? 1;
 
-    position.x += velocity.x * dt;
+    position.x += velocity.x * dt; // Update Rino's position.
   }
 
-  void _updateState() {
-    current = (velocity.x != 0) ? State.run : State.idle;
+  void _checkHorizontalCollision() async {
+    final level = game.world as Level;
+    final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
-    if ((moveDirection > 0 && scale.x > 0) ||
-        (moveDirection < 0 && scale.x < 0)) {
-      flipHorizontallyAroundCenter();
+    for (final block in level.collisionBlocks) {
+      if (position.x + rinoOffset < block.x + block.width &&
+          position.x + width + rinoOffset > block.x &&
+          block.y <= position.y &&
+          block.y + block.height >= position.y &&
+          isMoving) {
+        velocity.x = 0;
+        isMoving = false;
+
+        current = State.hitWall;
+        await animationTicker?.completed;
+
+        current = State.idle;
+
+        return;
+      }
     }
   }
 
-  bool playerInRange() {
-    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+  bool playerInSight() {
+    final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+    final double rinoOffset = (scale.x > 0) ? 0 : -(width * 2);
 
-    return (player.x + playerOffset >= rangeNeg &&
-        player.x + playerOffset <= rangePos &&
+    if (player.x + playerOffset >= sightLeft &&
+        player.x + playerOffset <= sightRight &&
         player.y + player.height > position.y &&
-        player.y < position.y + height);
+        player.y < position.y + height) {
+      final double startX = position.x + rinoOffset;
+      final double endX = player.x + playerOffset;
+      final level = game.world as Level;
+      for (final block in level.collisionBlocks) {
+        if (position.x + rinoOffset < player.x + playerOffset &&
+            block) {
+          return false;
+        }
+        if (((startX < endX && block.x > startX && block.x < endX) ||
+                (startX > endX && block.x < startX && block.x > endX))) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   void collidedWithPlayer() {
@@ -131,9 +187,11 @@ class Rino extends SpriteAnimationGroupComponent
     }
   }
 
-  void _calculateRange() {
-    rangeNeg = position.x - offNeg * tileSize;
-    rangePos = position.x + offPos * tileSize;
+  void _calculateSight() {
+    sightLeft = -sightRange * tileSize;
+    sightRight = sightRange * tileSize;
+    print("sight left: {$sightLeft}");
+    print("sight right: {$sightRight}");
   }
 
   void _loadAnimations() {

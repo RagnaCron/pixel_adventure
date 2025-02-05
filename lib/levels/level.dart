@@ -110,8 +110,8 @@ class Level extends World with HasGameReference<PixelAdventure> {
             final rino = Rino(
               position: spawnPoint.position,
               size: spawnPoint.size,
-              offNeg: spawnPoint.properties.getValue('offNeg'),
-              offPos: spawnPoint.properties.getValue('offPos'),
+              facingDirection:
+                  spawnPoint.properties.getValue('facingDirection'),
             );
             add(rino);
 

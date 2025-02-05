@@ -65,14 +65,6 @@ class PlantBullet extends SpriteAnimationGroupComponent
     }
   }
 
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is CollisionBlock) {}
-
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
   void collideWithPlayer() {
     _destroyBullet();
     game.player.collidedWithEnemy();
