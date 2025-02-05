@@ -26,7 +26,7 @@ class Rino extends SpriteAnimationGroupComponent
     super.removeOnFinish = const {State.hit: true},
   });
 
-  static const double sightRange = 32; // tiles
+  static const double sightRange = 34; // tiles
   static const int tileSize = 16;
   static const double stepTime = 0.05;
   static const double moveSpeed = 100.0;
@@ -91,7 +91,6 @@ class Rino extends SpriteAnimationGroupComponent
       if ((moveDirection > 0 && scale.x > 0) ||
           (moveDirection < 0 && scale.x < 0)) {
         flipHorizontallyAroundCenter();
-        print("ScaleX: $scale");
       }
     }
   }
@@ -160,20 +159,8 @@ class Rino extends SpriteAnimationGroupComponent
     if (isPlayerInRange()) {
       final level = game.world as Level;
       for (final block in level.collisionBlocks) {
-        print("Block at: ${block.x}, Rino at: $rinoX, Player at: $playerX");
-        print(
-            "Obstacle Blocks Right: ${(rinoX < playerX && block.x > rinoX && block.x < playerX)}");
-        print(
-            "Obstacle Blocks Left: ${(rinoX > playerX && block.x < rinoX && block.x > playerX)}");
-
-        // Check if there is an obstacle between the rino and the player
-        final bool isObstacleBlocking =
-            // When player is to the right of the rino
-            (rinoX < playerX && block.x > rinoX && block.x < playerX) ||
-                // When player is to the left of the rino
-                (rinoX > playerX && block.x < rinoX && block.x > playerX);
-
-        if (isObstacleBlocking) {
+        if ((rinoX < playerX && block.x > rinoX && block.x < playerX) ||
+            (rinoX > playerX && block.x < rinoX && block.x > playerX)) {
           return false;
         }
       }
