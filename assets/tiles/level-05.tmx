@@ -33,7 +33,7 @@
   <object id="114" name="Player" type="Player" x="144" y="272" width="32" height="32"/>
   <object id="119" name="Rino" type="Rino" x="448" y="272" width="48" height="32">
    <properties>
-    <property name="facingDirection" value="left"/>
+    <property name="facingDirection" value="right"/>
    </properties>
   </object>
   <object id="120" name="EmptyBlock" type="EmptyBlock" x="528" y="272" width="48" height="32"/>

@@ -39,7 +39,7 @@ class Rino extends SpriteAnimationGroupComponent
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation hitWallAnimation;
 
-  double moveDirection = 1;
+  double moveDirection = -1;
   double targetDirection = -1;
   double sightLeft = 0;
   double sightRight = 0;
@@ -63,14 +63,6 @@ class Rino extends SpriteAnimationGroupComponent
     _loadAnimations();
     _calculateSight();
 
-    if (facingDirection == 'right') {
-      flipHorizontallyAroundCenter();
-    }
-    if (facingDirection == 'left') {
-      flipHorizontallyAroundCenter();
-    }
-
-    print('Scalex: {$scale}');
 
     add(RectangleHitbox(
       collisionType: CollisionType.active,
@@ -78,6 +70,8 @@ class Rino extends SpriteAnimationGroupComponent
       size: hitBox.size,
       isSolid: true,
     ));
+
+    print('Scalex: {$scale}');
 
     return super.onLoad();
   }
@@ -100,6 +94,7 @@ class Rino extends SpriteAnimationGroupComponent
       if ((moveDirection > 0 && scale.x > 0) ||
           (moveDirection < 0 && scale.x < 0)) {
         flipHorizontallyAroundCenter();
+        print("ScaleX: ${scale}");
       }
     }
   }
