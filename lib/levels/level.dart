@@ -8,6 +8,7 @@ import 'package:pixel_adventure/enemies/rino.dart';
 import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
+import 'package:pixel_adventure/tiles/empty_block.dart';
 import 'package:pixel_adventure/tiles/platform.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
@@ -160,6 +161,13 @@ class Level extends World with HasGameReference<PixelAdventure> {
               viewField: spawnPoint.properties.getValue('viewField'),
             );
             add(plant);
+
+          case 'EmptyBlock':
+            final block = EmptyBlock(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+            );
+            add(block);
         }
       }
     }

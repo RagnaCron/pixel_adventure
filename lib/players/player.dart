@@ -89,6 +89,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
+    debugMode = true;
     priority = 1;
     startingPosition = Vector2(position.x, position.y);
 

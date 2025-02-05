@@ -63,12 +63,14 @@ class Rino extends SpriteAnimationGroupComponent
     _loadAnimations();
     _calculateSight();
 
-    if (facingDirection == 'facingLeft') {
+    if (facingDirection == 'right') {
       flipHorizontallyAroundCenter();
     }
-    if (facingDirection == 'facingRight') {
+    if (facingDirection == 'left') {
       flipHorizontallyAroundCenter();
     }
+
+    print('Scalex: {$scale}');
 
     add(RectangleHitbox(
       collisionType: CollisionType.active,
@@ -150,26 +152,25 @@ class Rino extends SpriteAnimationGroupComponent
     final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
     final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
-    if (player.x + playerOffset >= sightLeft &&
-        player.x + playerOffset <= sightRight &&
+    final double rinoX = position.x + rinoOffset;
+    final double playerX = player.x + playerOffset;
+
+    if (playerX >= sightLeft &&
+        playerX <= sightRight &&
         player.y + player.height > position.y &&
         player.y < position.y + height) {
       final level = game.world as Level;
       // todo: the offset of the rino seams to be at miss, about 48 pixels are "out of bound"
       for (final block in level.collisionBlocks) {
-        if ((position.x + rinoOffset < player.x + playerOffset &&
-                block.x > position.x + rinoOffset &&
-                block.x < player.x + playerOffset) ||
-            (position.x + rinoOffset > player.x + playerOffset &&
-                block.x < position.x + rinoOffset &&
-                block.x > player.x + playerOffset)) {
+        // player to the right
+        if ((rinoX < playerX && block.x > rinoX && block.x < playerX) ||
+            // player to the left
+            (rinoX > playerX && block.x < rinoX && block.x > playerX)) {
           return false;
         }
       }
-
       return true;
     }
-
     return false;
   }
 
@@ -190,8 +191,6 @@ class Rino extends SpriteAnimationGroupComponent
   void _calculateSight() {
     sightLeft = -sightRange * tileSize;
     sightRight = sightRange * tileSize;
-    print("sight left: {$sightLeft}");
-    print("sight right: {$sightRight}");
   }
 
   void _loadAnimations() {
