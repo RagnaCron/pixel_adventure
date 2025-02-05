@@ -63,15 +63,12 @@ class Rino extends SpriteAnimationGroupComponent
     _loadAnimations();
     _calculateSight();
 
-
     add(RectangleHitbox(
       collisionType: CollisionType.active,
       position: hitBox.position,
       size: hitBox.size,
       isSolid: true,
     ));
-
-    print('Scalex: {$scale}');
 
     return super.onLoad();
   }
@@ -94,7 +91,7 @@ class Rino extends SpriteAnimationGroupComponent
       if ((moveDirection > 0 && scale.x > 0) ||
           (moveDirection < 0 && scale.x < 0)) {
         flipHorizontallyAroundCenter();
-        print("ScaleX: ${scale}");
+        print("ScaleX: $scale");
       }
     }
   }
@@ -102,7 +99,7 @@ class Rino extends SpriteAnimationGroupComponent
   void _movement(double dt) {
     velocity.x = 0;
 
-    if (playerInSight() && !isMoving) {
+    if (isPlayerInSight() && !isMoving) {
       final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
       final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
@@ -143,24 +140,40 @@ class Rino extends SpriteAnimationGroupComponent
     }
   }
 
-  bool playerInSight() {
+  bool isPlayerInRange() {
+    final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
+    final double playerX = player.x + playerOffset;
+
+    return (playerX >= sightLeft &&
+        playerX <= sightRight &&
+        player.y + player.height > position.y &&
+        player.y < position.y + height);
+  }
+
+  bool isPlayerInSight() {
     final double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
     final double rinoOffset = (scale.x > 0) ? 0 : -width;
 
     final double rinoX = position.x + rinoOffset;
     final double playerX = player.x + playerOffset;
 
-    if (playerX >= sightLeft &&
-        playerX <= sightRight &&
-        player.y + player.height > position.y &&
-        player.y < position.y + height) {
+    if (isPlayerInRange()) {
       final level = game.world as Level;
-      // todo: the offset of the rino seams to be at miss, about 48 pixels are "out of bound"
       for (final block in level.collisionBlocks) {
-        // player to the right
-        if ((rinoX < playerX && block.x > rinoX && block.x < playerX) ||
-            // player to the left
-            (rinoX > playerX && block.x < rinoX && block.x > playerX)) {
+        print("Block at: ${block.x}, Rino at: $rinoX, Player at: $playerX");
+        print(
+            "Obstacle Blocks Right: ${(rinoX < playerX && block.x > rinoX && block.x < playerX)}");
+        print(
+            "Obstacle Blocks Left: ${(rinoX > playerX && block.x < rinoX && block.x > playerX)}");
+
+        // Check if there is an obstacle between the rino and the player
+        final bool isObstacleBlocking =
+            // When player is to the right of the rino
+            (rinoX < playerX && block.x > rinoX && block.x < playerX) ||
+                // When player is to the left of the rino
+                (rinoX > playerX && block.x < rinoX && block.x > playerX);
+
+        if (isObstacleBlocking) {
           return false;
         }
       }
