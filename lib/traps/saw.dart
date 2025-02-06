@@ -123,4 +123,8 @@ class Saw extends SpriteAnimationComponent
       ),
     );
   }
+
+  void collidedWithPlayer() {
+    game.player.collidedWithEnemy();
+  }
 }

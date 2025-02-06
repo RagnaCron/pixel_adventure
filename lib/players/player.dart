@@ -147,15 +147,15 @@ class Player extends SpriteAnimationGroupComponent
     if (!_playerReachedCheckpoint) {
       // todo: checkout if this can be simplified to be an interface and then one call to be made with 'other.collideWithPlayer()'...
       if (other is Checkpoint) {
-        _reachedCheckpoint();
+        other.collidedWithPlayer();
       }
 
       if (other is Platform) {
-        isOnMovingPlatform = true;
+        other.collidedWithPlayer();
       }
 
       if (other is Saw) {
-        _respawn();
+        other.collidedWithPlayer();
       }
 
       if (other is Fruit) {
@@ -378,7 +378,7 @@ class Player extends SpriteAnimationGroupComponent
     playerHit = false;
   }
 
-  void _reachedCheckpoint() async {
+  void reachedCheckpoint() async {
     if (game.playSound) {
       FlameAudio.play('disappear.wav', volume: game.soundVolume);
     }

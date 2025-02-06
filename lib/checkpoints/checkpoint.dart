@@ -88,4 +88,8 @@ class Checkpoint extends SpriteAnimationGroupComponent
           loop: loop),
     );
   }
+
+  void collidedWithPlayer() {
+    game.player.reachedCheckpoint();
+  }
 }

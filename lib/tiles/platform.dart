@@ -191,4 +191,8 @@ class Platform extends SpriteAnimationGroupComponent
       ),
     );
   }
+
+  void collidedWithPlayer() {
+    player.isOnMovingPlatform = true;
+  }
 }
