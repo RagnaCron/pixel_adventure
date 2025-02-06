@@ -58,8 +58,6 @@ class Rino extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
-
     player = game.player;
 
     _loadAnimations();

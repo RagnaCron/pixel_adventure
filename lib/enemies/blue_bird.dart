@@ -28,7 +28,7 @@ class BlueBird extends SpriteAnimationGroupComponent
   final double offPos;
 
   static const double stepTime = 0.05;
-  static const double moveSpeed = 100.0;
+  static const double moveSpeed = 80.0;
   static const int tileSize = 16;
   static const double _bouncedHeight = 260.0;
 
@@ -38,7 +38,6 @@ class BlueBird extends SpriteAnimationGroupComponent
   late final Player player;
 
   double moveDirection = 1;
-  double targetDirection = -1;
   double rangeNeg = 0;
   double rangePos = 0;
   Vector2 velocity = Vector2.zero();
@@ -53,7 +52,6 @@ class BlueBird extends SpriteAnimationGroupComponent
 
   @override
   Future<void> onLoad() async {
-    debugMode = true;
     player = game.player;
 
     _loadAnimations();
@@ -78,20 +76,30 @@ class BlueBird extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
+  @override
+  void collidedWithPlayer() {
+    if (player.velocity.y > 0 && player.y + player.height > position.y) {
+      if (game.playSound) {
+        FlameAudio.play('bounce.wav', volume: game.soundVolume);
+      }
+      gotStomped = true;
+
+      current = State.hit;
+      player.velocity.y = -_bouncedHeight;
+    } else {
+      player.collidedWithEnemy();
+    }
+  }
+
   void _movement(double dt) {
-    velocity.x = 0;
-
-    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-    double chickenOffset = (scale.x > 0) ? 0 : -width;
-
-    if (playerInRange()) {
-      targetDirection =
-          (player.x + playerOffset < position.x + chickenOffset) ? -1 : 1;
-      velocity.x = targetDirection * moveSpeed;
+    final double birdOffset = (scale.x > 0) ? 0 : -width;
+    if (position.x + birdOffset < rangeNeg) {
+      moveDirection = 1;
+    } else if (position.x + birdOffset > rangePos) {
+      moveDirection = -1;
     }
 
-    moveDirection = lerpDouble(moveDirection, targetDirection, 0.1) ?? 1;
-
+    velocity.x = moveDirection * moveSpeed;
     position.x += velocity.x * dt;
   }
 
@@ -142,20 +150,5 @@ class BlueBird extends SpriteAnimationGroupComponent
         player.x + playerOffset <= rangePos &&
         player.y + player.height > position.y &&
         player.y < position.y + height);
-  }
-
-  @override
-  void collidedWithPlayer() {
-    if (player.velocity.y > 0 && player.y + player.height > position.y) {
-      if (game.playSound) {
-        FlameAudio.play('bounce.wav', volume: game.soundVolume);
-      }
-      gotStomped = true;
-
-      current = State.hit;
-      player.velocity.y = -_bouncedHeight;
-    } else {
-      player.collidedWithEnemy();
-    }
   }
 }

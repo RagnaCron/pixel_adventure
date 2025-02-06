@@ -9,62 +9,62 @@
         },
         "level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 319.701027717222,
-                "y": 184.16692619121773
+                "y": 184.16692619121767
             }
         },
         "level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.09965742759266,
-                "y": 184.16692619121773
+                "x": 319.90034257240734,
+                "y": 183.9676113360324
             }
         },
         "level-03.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320,
-                "y": 184
+                "x": 320.3333333333333,
+                "y": 183.66666666666663
             }
         },
         "level-04.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.3151562499999998,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.35368896281335,
-                "y": 183.24818819056674
+                "x": 319.7338719258644,
+                "y": 183.6283711536177
             }
         },
         "level-05.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 324,
-                "y": 165.33333333333331
+                "x": 323.99999999999994,
+                "y": 165.33333333333334
             }
         }
     },
