@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
+import 'package:pixel_adventure/enemies/blue_bird.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/enemies/plant.dart';
@@ -144,16 +145,21 @@ class Player extends SpriteAnimationGroupComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!_playerReachedCheckpoint) {
-      if (other is Fruit) {
-        other.collidedWithPlayer();
+      // todo: checkout if this can be simplified to be an interface and then one call to be made with 'other.collideWithPlayer()'...
+      if (other is Checkpoint) {
+        _reachedCheckpoint();
+      }
+
+      if (other is Platform) {
+        isOnMovingPlatform = true;
       }
 
       if (other is Saw) {
         _respawn();
       }
 
-      if (other is Checkpoint) {
-        _reachedCheckpoint();
+      if (other is Fruit) {
+        other.collidedWithPlayer();
       }
 
       if (other is Chicken) {
@@ -168,10 +174,6 @@ class Player extends SpriteAnimationGroupComponent
         other.collideWithPlayer();
       }
 
-      if (other is Platform) {
-        isOnMovingPlatform = true;
-      }
-
       if (other is Plant) {
         other.collidedWithPlayer();
       }
@@ -181,6 +183,10 @@ class Player extends SpriteAnimationGroupComponent
       }
 
       if (other is Rino) {
+        other.collidedWithPlayer();
+      }
+
+      if (other is BlueBird) {
         other.collidedWithPlayer();
       }
     }

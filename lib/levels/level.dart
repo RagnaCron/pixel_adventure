@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:pixel_adventure/enemies/blue_bird.dart';
 import 'package:pixel_adventure/enemies/mushroom.dart';
 import 'package:pixel_adventure/enemies/plant.dart';
 import 'package:pixel_adventure/enemies/rino.dart';
@@ -161,6 +162,15 @@ class Level extends World with HasGameReference<PixelAdventure> {
               viewField: spawnPoint.properties.getValue('viewField'),
             );
             add(plant);
+
+          case 'BlueBird':
+            final bird = BlueBird(
+              position: spawnPoint.position,
+              size: spawnPoint.size,
+              offNeg: spawnPoint.properties.getValue('offNeg'),
+              offPos: spawnPoint.properties.getValue('offPos'),
+            );
+            add(bird);
 
           case 'EmptyBlock':
             final block = EmptyBlock(

@@ -46,11 +46,12 @@ static const double stepTime = 0.05;
     offsetX: 4,
     offsetY: 6,
     width: 24,
-    height: 26,
+    height: 22,
   );
 
   @override
   Future<void> onLoad() async {
+    debugMode = true;
     player = game.player;
 
     _loadAnimations();

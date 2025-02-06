@@ -31,6 +31,7 @@ flutter:
     - assets/images/Enemies/Mushroom/
     - assets/images/Enemies/Plant/
     - assets/images/Enemies/Rino/
+    - assets/images/Enemies/BlueBird/
     - assets/images/Terrain/
     - assets/images/Background/
     - assets/images/HUD/
