@@ -142,13 +142,4 @@ class BlueBird extends SpriteAnimationGroupComponent
       ),
     );
   }
-
-  bool playerInRange() {
-    double playerOffset = (player.scale.x > 0) ? 0 : -player.width;
-
-    return (player.x + playerOffset >= rangeNeg &&
-        player.x + playerOffset <= rangePos &&
-        player.y + player.height > position.y &&
-        player.y < position.y + height);
-  }
 }
