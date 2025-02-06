@@ -1,12 +1,12 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
-import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 class Spikes extends SpriteComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
-
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   bool isUpSideDown;
 
   Spikes({
@@ -44,12 +44,8 @@ class Spikes extends SpriteComponent
     return super.onLoad();
   }
 
- @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-   if (other is Player) {
-     other.collidedWithEnemy();
-   }
-
-    super.onCollisionStart(intersectionPoints, other);
+  @override
+  void collidedWithPlayer() {
+    game.player.collidedWithEnemy();
   }
 }

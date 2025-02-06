@@ -6,6 +6,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum State {
   flying,
@@ -13,7 +14,8 @@ enum State {
 }
 
 class BlueBird extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure> {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   BlueBird({
     super.position,
     super.size,
@@ -25,7 +27,7 @@ class BlueBird extends SpriteAnimationGroupComponent
   final double offNeg;
   final double offPos;
 
-static const double stepTime = 0.05;
+  static const double stepTime = 0.05;
   static const double moveSpeed = 100.0;
   static const int tileSize = 16;
   static const double _bouncedHeight = 260.0;
@@ -142,6 +144,7 @@ static const double stepTime = 0.05;
         player.y < position.y + height);
   }
 
+  @override
   void collidedWithPlayer() {
     if (player.velocity.y > 0 && player.y + player.height > position.y) {
       if (game.playSound) {

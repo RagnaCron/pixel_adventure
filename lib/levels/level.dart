@@ -10,7 +10,7 @@ import 'package:pixel_adventure/tiles/background_tile.dart';
 import 'package:pixel_adventure/checkpoints/checkpoint.dart';
 import 'package:pixel_adventure/enemies/chicken.dart';
 import 'package:pixel_adventure/tiles/empty_block.dart';
-import 'package:pixel_adventure/tiles/platform.dart';
+import 'package:pixel_adventure/traps/platform.dart';
 import 'package:pixel_adventure/traps/saw.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/collectables/fruit.dart';

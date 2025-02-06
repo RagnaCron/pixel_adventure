@@ -1,8 +1,8 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
-import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum FlagState {
   noFlag,
@@ -11,7 +11,8 @@ enum FlagState {
 }
 
 class Checkpoint extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   Checkpoint({
     super.position,
     super.size,
@@ -44,15 +45,15 @@ class Checkpoint extends SpriteAnimationGroupComponent
 
     return super.onLoad();
   }
-
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      _reachedCheckpoint();
-    }
-    super.onCollisionStart(intersectionPoints, other);
-  }
+  //
+  // @override
+  // void onCollisionStart(
+  //     Set<Vector2> intersectionPoints, PositionComponent other) {
+  //   if (other is Player) {
+  //     _reachedCheckpoint();
+  //   }
+  //   super.onCollisionStart(intersectionPoints, other);
+  // }
 
   void _reachedCheckpoint() async {
     current = FlagState.flagOut;
@@ -89,7 +90,9 @@ class Checkpoint extends SpriteAnimationGroupComponent
     );
   }
 
+  @override
   void collidedWithPlayer() {
+    _reachedCheckpoint();
     game.player.reachedCheckpoint();
   }
 }

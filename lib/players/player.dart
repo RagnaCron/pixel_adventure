@@ -2,19 +2,11 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
-import 'package:pixel_adventure/checkpoints/checkpoint.dart';
-import 'package:pixel_adventure/enemies/blue_bird.dart';
-import 'package:pixel_adventure/enemies/chicken.dart';
-import 'package:pixel_adventure/enemies/mushroom.dart';
-import 'package:pixel_adventure/enemies/plant.dart';
-import 'package:pixel_adventure/enemies/rino.dart';
-import 'package:pixel_adventure/projectiles/plant_bullet.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
-import 'package:pixel_adventure/collectables/fruit.dart';
-import 'package:pixel_adventure/tiles/platform.dart';
-import 'package:pixel_adventure/traps/saw.dart';
+import 'package:pixel_adventure/traps/platform.dart';
 import 'package:pixel_adventure/traps/trampoline.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 import 'package:pixel_adventure/utils/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -145,48 +137,7 @@ class Player extends SpriteAnimationGroupComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!_playerReachedCheckpoint) {
-      // todo: checkout if this can be simplified to be an interface and then one call to be made with 'other.collideWithPlayer()'...
-      if (other is Checkpoint) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Platform) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Saw) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Fruit) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Chicken) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Mushroom) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is Trampoline) {
-        other.collideWithPlayer();
-      }
-
-      if (other is Plant) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is PlantBullet) {
-        other.collideWithPlayer();
-      }
-
-      if (other is Rino) {
-        other.collidedWithPlayer();
-      }
-
-      if (other is BlueBird) {
+      if (other is Collided) {
         other.collidedWithPlayer();
       }
     }

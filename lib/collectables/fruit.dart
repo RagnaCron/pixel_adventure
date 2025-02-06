@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum FruitState {
   fruity,
@@ -10,7 +11,8 @@ enum FruitState {
 }
 
 class Fruit extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   final String fruit;
 
   Fruit({
@@ -53,6 +55,7 @@ class Fruit extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
+  @override
   void collidedWithPlayer() async {
     if (game.playSound) {
       FlameAudio.play('collect_fruit.wav', volume: game.soundVolume);

@@ -4,6 +4,7 @@ import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/collision_block.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum MovementState { movingRight, movingLeft, movingUp, movingDown }
 
@@ -14,7 +15,7 @@ enum PlatformState {
 
 class Platform extends SpriteAnimationGroupComponent
     with HasGameReference<PixelAdventure>, CollisionCallbacks
-    implements CollisionBlock {
+    implements CollisionBlock, Collided {
   final String type;
   final bool isClockWise;
   final double horizontalOffNeg;
@@ -192,6 +193,7 @@ class Platform extends SpriteAnimationGroupComponent
     );
   }
 
+  @override
   void collidedWithPlayer() {
     player.isOnMovingPlatform = true;
   }

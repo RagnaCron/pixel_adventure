@@ -1,11 +1,13 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum MovementState { movingRight, movingLeft, movingUp, movingDown, none }
 
 class Saw extends SpriteAnimationComponent
-    with HasGameReference<PixelAdventure> {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   final bool isClockWise;
   final double horizontalOffNeg;
   final double horizontalOffPos;
@@ -124,6 +126,7 @@ class Saw extends SpriteAnimationComponent
     );
   }
 
+  @override
   void collidedWithPlayer() {
     game.player.collidedWithEnemy();
   }

@@ -4,6 +4,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum TrampolineState {
   idle,
@@ -11,7 +12,8 @@ enum TrampolineState {
 }
 
 class Trampoline extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   Trampoline({
     super.position,
     super.size,
@@ -53,7 +55,8 @@ class Trampoline extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  void collideWithPlayer() {
+  @override
+  void collidedWithPlayer() {
     if (player.velocity.y > 0 && player.y + player.height > position.y) {
       if (game.playSound) {
         FlameAudio.play('bounde.wav', volume: game.soundVolume);
@@ -62,7 +65,8 @@ class Trampoline extends SpriteAnimationGroupComponent
       current = TrampolineState.jump;
       player.jumpCount = 1;
       player.isJumpingFromTrampoline = true;
-      Future.delayed(const Duration(milliseconds: 200), () => player.isJumpingFromTrampoline = false);
+      Future.delayed(const Duration(milliseconds: 200),
+          () => player.isJumpingFromTrampoline = false);
     }
   }
 
@@ -78,6 +82,4 @@ class Trampoline extends SpriteAnimationGroupComponent
       ),
     );
   }
-
-
 }

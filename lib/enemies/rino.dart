@@ -7,6 +7,7 @@ import 'package:pixel_adventure/levels/level.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum State {
   idle,
@@ -16,7 +17,8 @@ enum State {
 }
 
 class Rino extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   String facingDirection;
 
   Rino({
@@ -169,6 +171,7 @@ class Rino extends SpriteAnimationGroupComponent
     return false;
   }
 
+  @override
   void collidedWithPlayer() {
     if (player.velocity.y > 0 && player.y + player.height > position.y) {
       if (game.playSound) {

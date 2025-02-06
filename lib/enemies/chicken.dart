@@ -6,6 +6,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum ChickenState {
   idle,
@@ -14,7 +15,8 @@ enum ChickenState {
 }
 
 class Chicken extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   double offNeg;
   double offPos;
 
@@ -146,6 +148,7 @@ class Chicken extends SpriteAnimationGroupComponent
         player.y < position.y + height);
   }
 
+  @override
   void collidedWithPlayer() {
     if (player.velocity.y > 0 && player.y + player.height > position.y) {
       if (game.playSound) {

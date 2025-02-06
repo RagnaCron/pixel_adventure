@@ -5,6 +5,7 @@ import 'package:pixel_adventure/pixel_adventure.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/projectiles/plant_bullet.dart';
 import 'package:pixel_adventure/tiles/custom_hitbox.dart';
+import 'package:pixel_adventure/utils/collided.dart';
 
 enum PlantState {
   attack,
@@ -13,7 +14,8 @@ enum PlantState {
 }
 
 class Plant extends SpriteAnimationGroupComponent
-    with HasGameReference<PixelAdventure>, CollisionCallbacks {
+    with HasGameReference<PixelAdventure>
+    implements Collided {
   Plant({
     super.position,
     super.size,
@@ -94,6 +96,7 @@ class Plant extends SpriteAnimationGroupComponent
     return false;
   }
 
+  @override
   void collidedWithPlayer() {
     if (player.velocity.y > 0 && player.y + player.height > position.y) {
       if (game.playSound) {
