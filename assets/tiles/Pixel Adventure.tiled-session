@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-05.tmx",
+    "activeFile": "level-03.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -15,8 +15,8 @@
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.701027717222,
-                "y": 184.16692619121767
+                "x": 319.90034257240734,
+                "y": 183.9676113360324
             }
         },
         "level-02.tmx": {
@@ -27,8 +27,8 @@
             "scale": 2.5085937499999997,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.90034257240734,
-                "y": 183.9676113360324
+                "x": 319.701027717222,
+                "y": 184.16692619121767
             }
         },
         "level-03.tmx": {
@@ -39,8 +39,8 @@
             "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.3333333333333,
-                "y": 183.66666666666663
+                "x": 319.99999999999994,
+                "y": 183.33333333333334
             }
         },
         "level-04.tmx": {
@@ -80,8 +80,8 @@
     "recentFiles": [
         "level-01.tmx",
         "level-02.tmx",
-        "level-03.tmx",
+        "level-05.tmx",
         "level-04.tmx",
-        "level-05.tmx"
+        "level-03.tmx"
     ]
 }
