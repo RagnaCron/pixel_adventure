@@ -42,7 +42,12 @@ class PixelAdventure extends FlameGame
     // Load all images in to cache.
     await images.loadAllImages();
 
+    // _loadMainMenu();
+
     _loadLevel();
+
+    _createCameraComponent();
+
 
     if (showControls) {
       addJoyStick();
@@ -81,16 +86,19 @@ class PixelAdventure extends FlameGame
     _loadLevel();
   }
 
+  void _loadMainMenu() {
+
+    // world = MainMenu();
+
+    _createCameraComponent();
+  }
+
   void _loadLevel() {
     Future.delayed(const Duration(seconds: 1), () {
       world = Level(
         player: player,
         levelName: levelNames[currentLevelIndex],
       );
-
-      _createCameraComponent();
-
-      addAll([world]);
     });
   }
 
