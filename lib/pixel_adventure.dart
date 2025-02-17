@@ -6,6 +6,7 @@ import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:pixel_adventure/hud/jump_button.dart';
+import 'package:pixel_adventure/levels/main_menu.dart';
 import 'package:pixel_adventure/players/player.dart';
 import 'package:pixel_adventure/levels/level.dart';
 
@@ -88,7 +89,7 @@ class PixelAdventure extends FlameGame
 
   void _loadMainMenu() {
 
-    // world = MainMenu();
+    world = MainMenu();
 
     _createCameraComponent();
   }
