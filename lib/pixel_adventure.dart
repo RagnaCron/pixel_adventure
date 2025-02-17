@@ -42,9 +42,9 @@ class PixelAdventure extends FlameGame
     // Load all images in to cache.
     await images.loadAllImages();
 
-    // _loadMainMenu();
+    _loadMainMenu();
 
-    _loadLevel();
+    //_loadLevel();
 
     _createCameraComponent();
 
