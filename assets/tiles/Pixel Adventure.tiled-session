@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-03.tmx",
+    "activeFile": "main_menu.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -66,6 +66,14 @@
                 "x": 323.66666666666663,
                 "y": 165.33333333333331
             }
+        },
+        "main_menu.tmx": {
+            "scale": 1.186015625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.97892101969563,
+                "y": 183.8087082537382
+            }
         }
     },
     "openFiles": [
@@ -73,15 +81,17 @@
         "level-02.tmx",
         "level-03.tmx",
         "level-04.tmx",
-        "level-05.tmx"
+        "level-05.tmx",
+        "main_menu.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
     "property.type": "float",
     "recentFiles": [
         "level-01.tmx",
         "level-02.tmx",
-        "level-05.tmx",
+        "level-03.tmx",
         "level-04.tmx",
-        "level-03.tmx"
+        "level-05.tmx",
+        "main_menu.tmx"
     ]
 }
