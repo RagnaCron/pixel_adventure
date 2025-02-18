@@ -39,6 +39,7 @@ class Word extends PositionComponent with HasGameReference<PixelAdventure> {
   }
 
   List<int> _mapWordToLetterPosition(String word) {
+    // todo: change this, as it looks like ****, good thing is AI can write this in seconds, so I don't get my fingers dirty... =)
     List<int> letterIndexes = [];
     for (String char in word.split('')) {
       switch (char.toLowerCase()) {
