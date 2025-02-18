@@ -1,6 +1,5 @@
 
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/input.dart';
 import 'package:pixel_adventure/letters/word.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
@@ -22,11 +21,5 @@ class Button extends ButtonComponent with HasGameReference<PixelAdventure> {
     buttonDown = Word(word: title, fontScale: 0.9);
 
     return super.onLoad();
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    super.onTapDown(event);
-    print("onTapDown");
   }
 }
