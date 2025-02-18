@@ -84,7 +84,7 @@ class PixelAdventure extends FlameGame
     } else {
       currentLevelIndex = 0;
     }
-    _loadLevel();
+    loadLevel();
   }
 
   void _loadMainMenu() {
@@ -94,7 +94,7 @@ class PixelAdventure extends FlameGame
     _createCameraComponent();
   }
 
-  void _loadLevel() {
+  void loadLevel() {
     Future.delayed(const Duration(seconds: 1), () {
       world = Level(
         player: player,

@@ -4,7 +4,7 @@ import 'package:pixel_adventure/pixel_adventure.dart';
 
 class Word extends PositionComponent with HasGameReference<PixelAdventure> {
   String word;
-  int fontScale;
+  double fontScale;
 
   Word({
     super.position,
@@ -17,7 +17,6 @@ class Word extends PositionComponent with HasGameReference<PixelAdventure> {
   Future<void> onLoad() async {
     final letterIndexes = _mapWordToLetterPosition(word);
     _addLetters(letterIndexes);
-
     return super.onLoad();
   }
 
@@ -26,8 +25,8 @@ class Word extends PositionComponent with HasGameReference<PixelAdventure> {
       final letter = Letter(
         letterIndex: letterIndexes[i],
         position: Vector2(
-          x + (i * Letter.letterWidth) * fontScale,
-          0,
+          x + (i * Letter.letterWidth * fontScale),
+          y,
         ),
         size: Vector2(
           Letter.letterWidth * fontScale,

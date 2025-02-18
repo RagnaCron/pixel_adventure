@@ -32,9 +32,8 @@ class Letter extends SpriteComponent with HasGameReference<PixelAdventure> {
   }
 
   Vector2 _getLetterPosition(int index) {
-    int currentLetterIndex = index % (totalColumns * totalRows);
-    int column = currentLetterIndex % totalColumns;
-    int row = (currentLetterIndex / totalColumns).floor();
+    int column = index % totalColumns;
+    int row = (index / totalColumns).floor();
     return Vector2(column * letterWidth, row * letterHeight);
   }
 }
