@@ -16,12 +16,13 @@ class MainMenu extends World with HasGameReference<PixelAdventure> {
     add(
       Button(
         title: play,
-        size: Vector2(4 * Letter.letterWidth, Letter.letterHeight),
         position: Vector2(
-          game.size.x / 2 - (Letter.letterWidth * 4),
-          game.size.y / 4 - Letter.letterHeight,
+          game.size.x / 2 - (Letter.letterWidth * 8),
+          game.size.y / 4 - Letter.letterHeight * 3.8,
         ),
-        onPressed: game.loadLevel,
+        // onPressed: game.loadLevel, // todo: uncomment for actual gaming...
+        buttonFontScale: 4,
+        buttonDownFontScale: 3.8
       ),
     );
 

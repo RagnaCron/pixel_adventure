@@ -26,7 +26,7 @@ class Word extends PositionComponent with HasGameReference<PixelAdventure> {
         letterIndex: letterIndexes[i],
         position: Vector2(
           x + (i * Letter.letterWidth * fontScale),
-          y,
+          y * fontScale,
         ),
         size: Vector2(
           Letter.letterWidth * fontScale,
