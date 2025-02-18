@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/buttons/button.dart';
 import 'package:pixel_adventure/letters/letter.dart';
-import 'package:pixel_adventure/letters/word.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 class MainMenu extends World with HasGameReference<PixelAdventure> {
